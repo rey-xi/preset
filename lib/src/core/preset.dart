@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:preset/src/core/preset_value.dart';
 
 import '../presets/color.dart';
@@ -42,7 +43,6 @@ class Preset extends StatelessWidget {
                 color: colors.primary,
                 size: 24,
               ),
-              primaryColor: colors.primary,
               primaryIconTheme: IconThemeData(
                 color: colors.primary,
               ),
@@ -58,6 +58,10 @@ class Preset extends StatelessWidget {
                 color: colors.background,
                 shadowColor: colors.shade,
                 foregroundColor: colors.primary,
+                systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarColor: colors.primary,
+                  systemNavigationBarColor: colors.primary,
+                ),
               ),
               drawerTheme: DrawerThemeData(
                 backgroundColor: colors.background,
