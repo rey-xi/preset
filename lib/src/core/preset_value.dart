@@ -48,6 +48,8 @@ class PresetValue<T extends PresetValue<T>> extends ThemeExtension<T> {
   @override
   T copyWith() => this as T;
 
+  T copy(T other) => this as T;
+
   @override
   T lerp(other, t) => this as T;
 

@@ -35,7 +35,8 @@ class Preset extends StatelessWidget {
         final glyphs = GlyphPreset.of(context);
         //...
         return Theme(
-          data: Theme.of(context).copyWith(
+          data: ThemeData(
+              colorSchemeSeed: colors.primary,
               textTheme: glyphs.normal,
               iconTheme: IconThemeData(
                 color: colors.primary,
