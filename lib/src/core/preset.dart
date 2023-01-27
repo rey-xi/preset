@@ -7,7 +7,7 @@ import '../presets/glyph.dart';
 
 class Preset extends StatelessWidget {
   //...Fields
-  final Iterable<PresetValue> presets;
+  final Iterable<ValuePreset> presets;
   final Iterable<ThemeExtension> themes;
   final Widget? child;
 

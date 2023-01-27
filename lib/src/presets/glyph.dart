@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:preset/preset.dart';
 
-import '../core/preset_value.dart';
-import 'color.dart';
-
-class GlyphPreset extends PresetValue<GlyphPreset> {
+class GlyphPreset extends ValuePreset<GlyphPreset> {
   //...constants
-  static final redmond = GlyphPreset(
+  static const redmond = GlyphPreset(
     //...Redmond
     normal: Typography.blackRedmond,
     abnormal: Typography.blackRedmond,
@@ -17,7 +15,7 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   );
 
   //...Redwood City
-  static final redwoodCity = GlyphPreset(
+  static const redwoodCity = GlyphPreset(
     normal: Typography.blackRedwoodCity,
     abnormal: Typography.blackRedwoodCity,
     primary: Typography.blackRedwoodCity,
@@ -28,7 +26,7 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   );
 
   //...Helsinki
-  static final helsinki = GlyphPreset(
+  static const helsinki = GlyphPreset(
     normal: Typography.blackHelsinki,
     abnormal: Typography.blackHelsinki,
     primary: Typography.blackHelsinki,
@@ -39,7 +37,7 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   );
 
   //...Mountain View
-  static final mountainView = GlyphPreset(
+  static const mountainView = GlyphPreset(
     normal: Typography.blackMountainView,
     abnormal: Typography.blackMountainView,
     primary: Typography.blackMountainView,
@@ -50,7 +48,7 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   );
 
   //...Cupertino
-  static final cupertino = GlyphPreset(
+  static const cupertino = GlyphPreset(
     normal: Typography.blackCupertino,
     abnormal: Typography.blackCupertino,
     primary: Typography.blackCupertino,
@@ -64,7 +62,7 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   final TextTheme primary, secondary, normal;
   final TextTheme abnormal, ascent, error, warning;
 
-  GlyphPreset({
+  const GlyphPreset({
     required this.primary,
     required this.secondary,
     required this.normal,
@@ -72,40 +70,28 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
     required this.ascent,
     required this.error,
     required this.warning,
-  }) : super({
-          'primary': TextThemeCodec().encode(primary),
-          'secondary': TextThemeCodec().encode(secondary),
-          'normal': TextThemeCodec().encode(normal),
-          'abnormal': TextThemeCodec().encode(abnormal),
-          'ascent': TextThemeCodec().encode(ascent),
-          'error': TextThemeCodec().encode(error),
-          'warning': TextThemeCodec().encode(warning),
-        });
+  });
 
   factory GlyphPreset.of(BuildContext context) {
     //...
     final thx = Theme.of(context);
     final col = ColorPreset.of(context);
     //...Default to Typeface from Palette
-    final x = GlyphPreset.from(PresetValue.of(context));
+    final x = ValuePreset.of<GlyphPreset>(context);
     return x.copyWith(parent: thx.textTheme, palette: col);
   }
 
-  factory GlyphPreset.parse(String data) {
+  factory GlyphPreset.parse(String source) {
     //...
-    return GlyphPreset.from(PresetValue.parse(data));
-  }
-
-  factory GlyphPreset.from(PresetValue<GlyphPreset> preset) {
-    //...Default to Typeface from Palette
+    final data = ValuePreset.parse<GlyphPreset>(source);
     return GlyphPreset(
-      primary: TextThemeCodec().decode(preset['primary']),
-      secondary: TextThemeCodec().decode(preset['secondary']),
-      normal: TextThemeCodec().decode(preset['normal']),
-      abnormal: TextThemeCodec().decode(preset['abnormal']),
-      ascent: TextThemeCodec().decode(preset['ascent']),
-      error: TextThemeCodec().decode(preset['error']),
-      warning: TextThemeCodec().decode(preset['warning']),
+      primary: TextThemeCodec().de(data['primary']) ?? redmond.primary,
+      secondary: TextThemeCodec().de(data['secondary']) ?? redmond.secondary,
+      normal: TextThemeCodec().de(data['normal']) ?? redmond.normal,
+      abnormal: TextThemeCodec().de(data['abnormal']) ?? redmond.abnormal,
+      ascent: TextThemeCodec().de(data['ascent']) ?? redmond.ascent,
+      error: TextThemeCodec().de(data['error']) ?? redmond.error,
+      warning: TextThemeCodec().de(data['warning']) ?? redmond.error,
     );
   }
 
@@ -170,7 +156,8 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
     );
   }
 
-  GlyphPreset merge(GlyphPreset? other) {
+  @override
+  GlyphPreset merge(other) {
     //...
     return GlyphPreset(
       primary: primary.merge(other?.primary),
@@ -227,5 +214,18 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
       error: TextTheme.lerp(error, other.error, t),
       warning: TextTheme.lerp(warning, other.warning, t),
     );
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'primary': TextThemeCodec().en(primary),
+      'secondary': TextThemeCodec().en(secondary),
+      'normal': TextThemeCodec().en(normal),
+      'abnormal': TextThemeCodec().en(abnormal),
+      'ascent': TextThemeCodec().en(ascent),
+      'error': TextThemeCodec().en(error),
+      'warning': TextThemeCodec().en(warning),
+    };
   }
 }

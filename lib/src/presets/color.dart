@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:preset/preset.dart';
 
 import '../core/preset_value.dart';
 
-class ColorPreset extends PresetValue<ColorPreset> {
+class ColorPreset extends ValuePreset<ColorPreset> {
   //...Constants
-  static final internal = ColorPreset(
-    foreground: const Color(0xFF6B6266),
-    background: const Color(0xffe1dacb),
-    primary: const Color(0xFF887384),
-    secondary: const Color(0xffec712d),
-    ascent: const Color(0xffe7cfae),
-    success: const Color(0xff499f51),
-    error: const Color(0xffda7673),
-    warning: const Color(0xffe5ad71),
-    tint: const Color(0x1df5ede2),
-    shade: const Color(0x1d75503d),
+  static const internal = ColorPreset(
+    foreground: Color(0xFF6B6266),
+    background: Color(0xffe1dacb),
+    primary: Color(0xFF887384),
+    secondary: Color(0xffec712d),
+    ascent: Color(0xffe7cfae),
+    success: Color(0xff499f51),
+    error: Color(0xffda7673),
+    warning: Color(0xffe5ad71),
+    tint: Color(0x1df5ede2),
+    shade: Color(0x1d75503d),
   );
 
   //...Fields
@@ -23,7 +24,7 @@ class ColorPreset extends PresetValue<ColorPreset> {
   final Color success, error, warning;
   final Color shade, tint;
 
-  ColorPreset({
+  const ColorPreset({
     required this.foreground,
     required this.background,
     required this.primary,
@@ -34,42 +35,27 @@ class ColorPreset extends PresetValue<ColorPreset> {
     required this.warning,
     required this.tint,
     required this.shade,
-  }) : super({
-          'foreground': ColorCodec().encode(foreground),
-          'background': ColorCodec().encode(background),
-          'primary': ColorCodec().encode(primary),
-          'secondary': ColorCodec().encode(secondary),
-          'ascent': ColorCodec().encode(ascent),
-          'success': ColorCodec().encode(success),
-          'error': ColorCodec().encode(error),
-          'warning': ColorCodec().encode(warning),
-          'tint': ColorCodec().encode(tint),
-          'shade': ColorCodec().encode(shade),
-        });
-
-  factory ColorPreset.parse(String data) {
-    //...
-    return ColorPreset.from(PresetValue.parse(data));
-  }
+  });
 
   factory ColorPreset.of(BuildContext context) {
     //...
-    return ColorPreset.from(PresetValue.of(context));
+    return ValuePreset.of<ColorPreset>(context);
   }
 
-  factory ColorPreset.from(PresetValue<ColorPreset> obj) {
+  factory ColorPreset.parse(String source) {
     //...
+    final data = ValuePreset.parse<ColorPreset>(source);
     return ColorPreset(
-      foreground: ColorCodec().decode(obj['foreground']) ?? internal.foreground,
-      background: ColorCodec().decode(obj['background']) ?? internal.background,
-      primary: ColorCodec().decode(obj['primary']) ?? internal.primary,
-      secondary: ColorCodec().decode(obj['secondary']) ?? internal.secondary,
-      ascent: ColorCodec().decode(obj['ascent']) ?? internal.ascent,
-      success: ColorCodec().decode(obj['success']) ?? internal.success,
-      error: ColorCodec().decode(obj['error']) ?? internal.error,
-      warning: ColorCodec().decode(obj['warning']) ?? internal.warning,
-      tint: ColorCodec().decode(obj['tint']) ?? internal.tint,
-      shade: ColorCodec().decode(obj['shade']) ?? internal.shade,
+      foreground: ColorCodec().de(data['foreground']) ?? internal.foreground,
+      background: ColorCodec().de(data['background']) ?? internal.background,
+      primary: ColorCodec().de(data['primary']) ?? internal.primary,
+      secondary: ColorCodec().de(data['secondary']) ?? internal.secondary,
+      ascent: ColorCodec().de(data['ascent']) ?? internal.ascent,
+      success: ColorCodec().de(data['success']) ?? internal.success,
+      error: ColorCodec().de(data['error']) ?? internal.error,
+      warning: ColorCodec().de(data['warning']) ?? internal.warning,
+      tint: ColorCodec().de(data['tint']) ?? internal.tint,
+      shade: ColorCodec().de(data['shade']) ?? internal.shade,
     );
   }
 
@@ -127,6 +113,7 @@ class ColorPreset extends PresetValue<ColorPreset> {
     );
   }
 
+  @override
   ColorPreset merge(other) {
     //...
     return ColorPreset(
@@ -159,5 +146,21 @@ class ColorPreset extends PresetValue<ColorPreset> {
       shade: Color.lerp(shade, other.shade, t)!,
       tint: Color.lerp(tint, other.tint, t)!,
     );
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'foreground': ColorCodec().en(foreground),
+      'background': ColorCodec().en(background),
+      'primary': ColorCodec().en(primary),
+      'secondary': ColorCodec().en(secondary),
+      'ascent': ColorCodec().en(ascent),
+      'success': ColorCodec().en(success),
+      'error': ColorCodec().en(error),
+      'warning': ColorCodec().en(warning),
+      'tint': ColorCodec().en(tint),
+      'shade': ColorCodec().en(shade),
+    };
   }
 }
