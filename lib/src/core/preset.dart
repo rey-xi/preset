@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:preset/src/core/preset_value.dart';
@@ -38,7 +40,7 @@ class Preset extends StatelessWidget {
         final glyphs = GlyphPreset.of(context);
         final theme = distribution ??
             ThemeData(
-              colorSchemeSeed: colors.primary,
+              primarySwatch: colors.swatch,
               textTheme: glyphs.normal,
               iconTheme: IconThemeData(
                 color: colors.primary,
@@ -198,5 +200,70 @@ class Preset extends StatelessWidget {
         );
       }),
     );
+  }
+}
+
+extension Number<T extends num> on T {
+  //...Methods
+  /// Returns positive version of number. It's achieved
+  /// by finding the square root of the square of number.
+  /// In other words: √num²
+  /// ```dart
+  /// print(-2.prime()); // 2;
+  /// ```
+  T prime([int seed = 1]) {
+    final num = math.sqrt(math.pow(this, 2));
+    if (T == int) return (num * seed).round() as T;
+    if (T == double) return (num * seed).toDouble() as T;
+    return (num * seed) as T;
+  }
+
+  /// Return's the minimum number between this number and
+  /// [t]. Same as [math.min] between this number and
+  /// [t]. In other words, y = x < other? x : other
+  /// ```dart
+  /// print(2.max(3)); // 2;
+  /// ```
+  T min(T? t) => t != null ? math.min(this, t) : this;
+}
+
+extension Numbers<T extends num> on Iterable<T> {
+  /// Return's the minimum number from the list
+  /// ```dart
+  /// print([2, 3].min); // 2;
+  /// ```
+  T get min {
+    T min = first;
+    for (T number in this) {
+      min = min.min(number);
+    }
+    return min;
+  }
+}
+
+extension Swatch<T extends Color> on T {
+  //...Methods
+  /// compare color values with [other] color values.
+  /// [precision] will be used to constrain the accuracy
+  /// of the formula.
+  double difference(Color other, [double precision = 510.0]) {
+    final a = (other.alpha - alpha).prime(1);
+    final r = (other.red - red).prime(1);
+    final g = (other.green - green).prime(1);
+    final b = (other.blue - blue).prime(1);
+    return math.sqrt(a ^ 2 + r ^ 2 + g ^ 2 + b ^ 2) / 510.0 * precision;
+  }
+}
+
+extension Swatches<T extends Color> on Iterable<T> {
+  //...Methods
+  /// compare color values of each color in this color list
+  /// with [other] color values and return the color with the
+  /// smallest difference based on [precision]
+  T closestTo(Color other, [double precision = 510.0]) {
+    //...
+    final differences = map((e) => e.difference(other, precision));
+    final minIndex = differences.toList().indexOf(differences.min);
+    return elementAt(minIndex);
   }
 }

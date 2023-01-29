@@ -3,7 +3,7 @@ import 'package:preset/preset.dart';
 
 class PresetApp extends MaterialApp {
   //...Fields
-  final Iterable<ValuePreset> presets;
+  final Iterable<ValuePreset> defaultPresets;
   final Iterable<ThemeExtension> extensions;
   final ThemeData? distribution;
 
@@ -34,13 +34,13 @@ class PresetApp extends MaterialApp {
     super.restorationScopeId,
     super.scrollBehavior,
     super.useInheritedMediaQuery = false,
-    this.presets = const {},
+    this.defaultPresets = const {},
     this.extensions = const {},
     this.distribution,
   }) : super(
           builder: (context, child) {
             return Preset(
-              presets: presets,
+              presets: defaultPresets,
               extensions: extensions,
               distribution: distribution,
               child: child,

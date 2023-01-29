@@ -229,3 +229,8 @@ class GlyphPreset extends ValuePreset<GlyphPreset> {
     };
   }
 }
+
+extension ContextGlyphPreset on BuildContext {
+  //...Getters
+  GlyphPreset get glyphPreset => GlyphPreset.of(this);
+}

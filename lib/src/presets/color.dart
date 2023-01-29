@@ -60,6 +60,10 @@ class ColorPreset extends ValuePreset<ColorPreset> {
   }
 
   //...Getters
+  MaterialColor get swatch {
+    return Colors.primaries.closestTo(primary);
+  }
+
   Color get primal {
     var hsv = HSVColor.fromColor(primary);
     hsv = hsv.withSaturation(.4).withValue(.6);
