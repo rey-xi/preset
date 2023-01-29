@@ -39,23 +39,23 @@ class ColorPreset extends ValuePreset<ColorPreset> {
 
   factory ColorPreset.of(BuildContext context) {
     //...
-    return ValuePreset.of<ColorPreset>(context);
+    return ValuePreset.of<ColorPreset>(context) ?? internal;
   }
 
   factory ColorPreset.parse(String source) {
     //...
     final data = ValuePreset.parse<ColorPreset>(source);
     return ColorPreset(
-      foreground: ColorCodec().de(data['foreground']) ?? internal.foreground,
-      background: ColorCodec().de(data['background']) ?? internal.background,
-      primary: ColorCodec().de(data['primary']) ?? internal.primary,
-      secondary: ColorCodec().de(data['secondary']) ?? internal.secondary,
-      ascent: ColorCodec().de(data['ascent']) ?? internal.ascent,
-      success: ColorCodec().de(data['success']) ?? internal.success,
-      error: ColorCodec().de(data['error']) ?? internal.error,
-      warning: ColorCodec().de(data['warning']) ?? internal.warning,
-      tint: ColorCodec().de(data['tint']) ?? internal.tint,
-      shade: ColorCodec().de(data['shade']) ?? internal.shade,
+      foreground: colorCodec.decode(data['foreground']) ?? internal.foreground,
+      background: colorCodec.decode(data['background']) ?? internal.background,
+      primary: colorCodec.decode(data['primary']) ?? internal.primary,
+      secondary: colorCodec.decode(data['secondary']) ?? internal.secondary,
+      ascent: colorCodec.decode(data['ascent']) ?? internal.ascent,
+      success: colorCodec.decode(data['success']) ?? internal.success,
+      error: colorCodec.decode(data['error']) ?? internal.error,
+      warning: colorCodec.decode(data['warning']) ?? internal.warning,
+      tint: colorCodec.decode(data['tint']) ?? internal.tint,
+      shade: colorCodec.decode(data['shade']) ?? internal.shade,
     );
   }
 
@@ -151,16 +151,21 @@ class ColorPreset extends ValuePreset<ColorPreset> {
   @override
   Map<String, dynamic> toJson() {
     return {
-      'foreground': ColorCodec().en(foreground),
-      'background': ColorCodec().en(background),
-      'primary': ColorCodec().en(primary),
-      'secondary': ColorCodec().en(secondary),
-      'ascent': ColorCodec().en(ascent),
-      'success': ColorCodec().en(success),
-      'error': ColorCodec().en(error),
-      'warning': ColorCodec().en(warning),
-      'tint': ColorCodec().en(tint),
-      'shade': ColorCodec().en(shade),
+      'foreground': colorCodec.encode(foreground),
+      'background': colorCodec.encode(background),
+      'primary': colorCodec.encode(primary),
+      'secondary': colorCodec.encode(secondary),
+      'ascent': colorCodec.encode(ascent),
+      'success': colorCodec.encode(success),
+      'error': colorCodec.encode(error),
+      'warning': colorCodec.encode(warning),
+      'tint': colorCodec.encode(tint),
+      'shade': colorCodec.encode(shade),
     };
   }
+}
+
+extension ContextColorPreset on BuildContext {
+  //...Getters
+  ColorPreset get colorPreset => ColorPreset.of(this);
 }

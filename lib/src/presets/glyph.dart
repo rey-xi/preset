@@ -75,23 +75,23 @@ class GlyphPreset extends ValuePreset<GlyphPreset> {
   factory GlyphPreset.of(BuildContext context) {
     //...
     final thx = Theme.of(context);
-    final col = ColorPreset.of(context);
+    final colors = ColorPreset.of(context);
     //...Default to Typeface from Palette
-    final x = ValuePreset.of<GlyphPreset>(context);
-    return x.copyWith(parent: thx.textTheme, palette: col);
+    final x = ValuePreset.of<GlyphPreset>(context) ?? redmond;
+    return x.copyWith(parent: thx.textTheme, palette: colors);
   }
 
   factory GlyphPreset.parse(String source) {
     //...
     final data = ValuePreset.parse<GlyphPreset>(source);
     return GlyphPreset(
-      primary: TextThemeCodec().de(data['primary']) ?? redmond.primary,
-      secondary: TextThemeCodec().de(data['secondary']) ?? redmond.secondary,
-      normal: TextThemeCodec().de(data['normal']) ?? redmond.normal,
-      abnormal: TextThemeCodec().de(data['abnormal']) ?? redmond.abnormal,
-      ascent: TextThemeCodec().de(data['ascent']) ?? redmond.ascent,
-      error: TextThemeCodec().de(data['error']) ?? redmond.error,
-      warning: TextThemeCodec().de(data['warning']) ?? redmond.error,
+      primary: textThemeCodec.decode(data['primary']) ?? redmond.primary,
+      secondary: textThemeCodec.decode(data['secondary']) ?? redmond.secondary,
+      normal: textThemeCodec.decode(data['normal']) ?? redmond.normal,
+      abnormal: textThemeCodec.decode(data['abnormal']) ?? redmond.abnormal,
+      ascent: textThemeCodec.decode(data['ascent']) ?? redmond.ascent,
+      error: textThemeCodec.decode(data['error']) ?? redmond.error,
+      warning: textThemeCodec.decode(data['warning']) ?? redmond.error,
     );
   }
 
@@ -219,13 +219,13 @@ class GlyphPreset extends ValuePreset<GlyphPreset> {
   @override
   Map<String, dynamic> toJson() {
     return {
-      'primary': TextThemeCodec().en(primary),
-      'secondary': TextThemeCodec().en(secondary),
-      'normal': TextThemeCodec().en(normal),
-      'abnormal': TextThemeCodec().en(abnormal),
-      'ascent': TextThemeCodec().en(ascent),
-      'error': TextThemeCodec().en(error),
-      'warning': TextThemeCodec().en(warning),
+      'primary': textThemeCodec.encode(primary),
+      'secondary': textThemeCodec.encode(secondary),
+      'normal': textThemeCodec.encode(normal),
+      'abnormal': textThemeCodec.encode(abnormal),
+      'ascent': textThemeCodec.encode(ascent),
+      'error': textThemeCodec.encode(error),
+      'warning': textThemeCodec.encode(warning),
     };
   }
 }

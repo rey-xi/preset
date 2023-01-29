@@ -1,97 +1,113 @@
 part of preset;
 
 abstract class PresetCodec<T> {
-  //...Method
-  Map<String, dynamic> en(T? obj);
+  //...Fields
+  const PresetCodec();
 
-  T? de(Map<String, dynamic>? data);
+  //...Methods
+  Map<String, dynamic> encode(T? obj);
+
+  T? decode(Map<String, dynamic>? data);
 }
 
+//```codec
+const textThemeCodec = TextThemeCodec();
+const textStyleCodec = TextStyleCodec();
+const localeCodec = LocaleCodec();
+const colorCodec = ColorCodec();
+//```
+
 class TextThemeCodec extends PresetCodec<TextTheme> {
+  //...Fields
+  const TextThemeCodec();
+
   //...Methods
   @override
-  Map<String, dynamic> en(TextTheme? obj) {
+  Map<String, dynamic> encode(TextTheme? obj) {
     if (obj == null) return {};
     return {
-      'displayLarge': TextStyleCodec().en(obj.displayLarge),
-      'displayMedium': TextStyleCodec().en(obj.displayMedium),
-      'displaySmall': TextStyleCodec().en(obj.displaySmall),
-      'headlineLarge': TextStyleCodec().en(obj.headlineLarge),
-      'headlineMedium': TextStyleCodec().en(obj.headlineMedium),
-      'headlineSmall': TextStyleCodec().en(obj.headlineSmall),
-      'titleLarge': TextStyleCodec().en(obj.titleLarge),
-      'titleMedium': TextStyleCodec().en(obj.titleMedium),
-      'titleSmall': TextStyleCodec().en(obj.titleSmall),
-      'bodyLarge': TextStyleCodec().en(obj.bodyLarge),
-      'bodyMedium': TextStyleCodec().en(obj.bodyMedium),
-      'bodySmall': TextStyleCodec().en(obj.bodySmall),
-      'labelLarge': TextStyleCodec().en(obj.labelLarge),
-      'labelMedium': TextStyleCodec().en(obj.labelMedium),
-      'labelSmall': TextStyleCodec().en(obj.labelSmall),
-      'headline1': TextStyleCodec().en(obj.headline1),
-      'headline2': TextStyleCodec().en(obj.headline2),
-      'headline3': TextStyleCodec().en(obj.headline3),
-      'headline4': TextStyleCodec().en(obj.headline4),
-      'headline5': TextStyleCodec().en(obj.headline5),
-      'headline6': TextStyleCodec().en(obj.headline6),
-      'subtitle1': TextStyleCodec().en(obj.subtitle1),
-      'subtitle2': TextStyleCodec().en(obj.subtitle2),
-      'bodyText1': TextStyleCodec().en(obj.bodyText1),
-      'bodyText2': TextStyleCodec().en(obj.bodyText2),
-      'caption': TextStyleCodec().en(obj.caption),
-      'button': TextStyleCodec().en(obj.button),
-      'overline': TextStyleCodec().en(obj.overline),
+      'displayLarge': textStyleCodec.encode(obj.displayLarge),
+      'displayMedium': textStyleCodec.encode(obj.displayMedium),
+      'displaySmall': textStyleCodec.encode(obj.displaySmall),
+      'headlineLarge': textStyleCodec.encode(obj.headlineLarge),
+      'headlineMedium': textStyleCodec.encode(obj.headlineMedium),
+      'headlineSmall': textStyleCodec.encode(obj.headlineSmall),
+      'titleLarge': textStyleCodec.encode(obj.titleLarge),
+      'titleMedium': textStyleCodec.encode(obj.titleMedium),
+      'titleSmall': textStyleCodec.encode(obj.titleSmall),
+      'bodyLarge': textStyleCodec.encode(obj.bodyLarge),
+      'bodyMedium': textStyleCodec.encode(obj.bodyMedium),
+      'bodySmall': textStyleCodec.encode(obj.bodySmall),
+      'labelLarge': textStyleCodec.encode(obj.labelLarge),
+      'labelMedium': textStyleCodec.encode(obj.labelMedium),
+      'labelSmall': textStyleCodec.encode(obj.labelSmall),
+      'headline1': textStyleCodec.encode(obj.headline1),
+      'headline2': textStyleCodec.encode(obj.headline2),
+      'headline3': textStyleCodec.encode(obj.headline3),
+      'headline4': textStyleCodec.encode(obj.headline4),
+      'headline5': textStyleCodec.encode(obj.headline5),
+      'headline6': textStyleCodec.encode(obj.headline6),
+      'subtitle1': textStyleCodec.encode(obj.subtitle1),
+      'subtitle2': textStyleCodec.encode(obj.subtitle2),
+      'bodyText1': textStyleCodec.encode(obj.bodyText1),
+      'bodyText2': textStyleCodec.encode(obj.bodyText2),
+      'caption': textStyleCodec.encode(obj.caption),
+      'button': textStyleCodec.encode(obj.button),
+      'overline': textStyleCodec.encode(obj.overline),
     };
   }
 
   @override
-  TextTheme? de(Map<String, dynamic>? data) {
+  TextTheme? decode(Map<String, dynamic>? data) {
     if (data == null || data.isEmpty) return null;
     return TextTheme(
-      headline1: TextStyleCodec().de(data['headline1']),
-      headline2: TextStyleCodec().de(data['headline2']),
-      headline3: TextStyleCodec().de(data['headline3']),
-      headline4: TextStyleCodec().de(data['headline4']),
-      headline5: TextStyleCodec().de(data['headline5']),
-      headline6: TextStyleCodec().de(data['headline6']),
-      subtitle1: TextStyleCodec().de(data['subtitle1']),
-      subtitle2: TextStyleCodec().de(data['subtitle2']),
-      bodyText1: TextStyleCodec().de(data['bodyText1']),
-      bodyText2: TextStyleCodec().de(data['bodyText2']),
-      caption: TextStyleCodec().de(data['caption']),
-      button: TextStyleCodec().de(data['button']),
-      overline: TextStyleCodec().de(data['overline']),
+      headline1: textStyleCodec.decode(data['headline1']),
+      headline2: textStyleCodec.decode(data['headline2']),
+      headline3: textStyleCodec.decode(data['headline3']),
+      headline4: textStyleCodec.decode(data['headline4']),
+      headline5: textStyleCodec.decode(data['headline5']),
+      headline6: textStyleCodec.decode(data['headline6']),
+      subtitle1: textStyleCodec.decode(data['subtitle1']),
+      subtitle2: textStyleCodec.decode(data['subtitle2']),
+      bodyText1: textStyleCodec.decode(data['bodyText1']),
+      bodyText2: textStyleCodec.decode(data['bodyText2']),
+      caption: textStyleCodec.decode(data['caption']),
+      button: textStyleCodec.decode(data['button']),
+      overline: textStyleCodec.decode(data['overline']),
     ).merge(
       TextTheme(
-        displayLarge: TextStyleCodec().de(data['displayLarge']),
-        displayMedium: TextStyleCodec().de(data['displayMedium']),
-        displaySmall: TextStyleCodec().de(data['displaySmall']),
-        headlineLarge: TextStyleCodec().de(data['headlineLarge']),
-        headlineMedium: TextStyleCodec().de(data['headlineMedium']),
-        headlineSmall: TextStyleCodec().de(data['headlineSmall']),
-        titleLarge: TextStyleCodec().de(data['titleLarge']),
-        titleMedium: TextStyleCodec().de(data['titleMedium']),
-        titleSmall: TextStyleCodec().de(data['titleSmall']),
-        bodyLarge: TextStyleCodec().de(data['bodyLarge']),
-        bodyMedium: TextStyleCodec().de(data['bodyMedium']),
-        bodySmall: TextStyleCodec().de(data['bodySmall']),
-        labelLarge: TextStyleCodec().de(data['labelLarge']),
-        labelMedium: TextStyleCodec().de(data['labelMedium']),
-        labelSmall: TextStyleCodec().de(data['labelSmall']),
+        displayLarge: textStyleCodec.decode(data['displayLarge']),
+        displayMedium: textStyleCodec.decode(data['displayMedium']),
+        displaySmall: textStyleCodec.decode(data['displaySmall']),
+        headlineLarge: textStyleCodec.decode(data['headlineLarge']),
+        headlineMedium: textStyleCodec.decode(data['headlineMedium']),
+        headlineSmall: textStyleCodec.decode(data['headlineSmall']),
+        titleLarge: textStyleCodec.decode(data['titleLarge']),
+        titleMedium: textStyleCodec.decode(data['titleMedium']),
+        titleSmall: textStyleCodec.decode(data['titleSmall']),
+        bodyLarge: textStyleCodec.decode(data['bodyLarge']),
+        bodyMedium: textStyleCodec.decode(data['bodyMedium']),
+        bodySmall: textStyleCodec.decode(data['bodySmall']),
+        labelLarge: textStyleCodec.decode(data['labelLarge']),
+        labelMedium: textStyleCodec.decode(data['labelMedium']),
+        labelSmall: textStyleCodec.decode(data['labelSmall']),
       ),
     );
   }
 }
 
 class TextStyleCodec extends PresetCodec<TextStyle> {
+  //...Fields
+  const TextStyleCodec();
+
   //...Methods
   @override
-  Map<String, dynamic> en(TextStyle? obj) {
+  Map<String, dynamic> encode(TextStyle? obj) {
     if (obj == null) return {};
     return {
       'inherit': obj.inherit,
-      'color': ColorCodec().en(obj.color),
-      'backgroundColor': ColorCodec().en(obj.backgroundColor),
+      'color': colorCodec.encode(obj.color),
+      'backgroundColor': colorCodec.encode(obj.backgroundColor),
       'fontSize': obj.fontSize,
       'fontWeight': obj.fontWeight?.index,
       'fontStyle': obj.fontStyle?.index,
@@ -100,8 +116,8 @@ class TextStyleCodec extends PresetCodec<TextStyle> {
       'textBaseline': obj.textBaseline?.index,
       'height': obj.height,
       'leading': obj.leadingDistribution?.index,
-      'locale': LocaleCodec().en(obj.locale),
-      'decorationColor': ColorCodec().en(obj.decorationColor),
+      'locale': localeCodec.encode(obj.locale),
+      'decorationColor': colorCodec.encode(obj.decorationColor),
       'decorationStyle': obj.decorationStyle?.index,
       'decorationThickness': obj.decorationThickness,
       'fontFamily': obj.fontFamily,
@@ -111,12 +127,12 @@ class TextStyleCodec extends PresetCodec<TextStyle> {
   }
 
   @override
-  TextStyle? de(Map<String, dynamic>? data) {
+  TextStyle? decode(Map<String, dynamic>? data) {
     if (data == null || data.isEmpty) return null;
     return TextStyle(
       inherit: data['inherit'],
-      color: ColorCodec().de(data['color']),
-      backgroundColor: ColorCodec().de(data['backgroundColor']),
+      color: colorCodec.decode(data['color']),
+      backgroundColor: colorCodec.decode(data['backgroundColor']),
       fontSize: data['fontSize'],
       fontWeight: FontWeight.values[data['fontWeight'] ?? 3],
       fontStyle: FontStyle.values[data['fontStyle'] ?? 0],
@@ -125,8 +141,8 @@ class TextStyleCodec extends PresetCodec<TextStyle> {
       textBaseline: TextBaseline.values[data['textBaseline'] ?? 0],
       height: data['height'],
       leadingDistribution: TextLeadingDistribution.values[data['leading'] ?? 0],
-      locale: LocaleCodec().de(data['locale']),
-      decorationColor: ColorCodec().de(data['decorationColor']),
+      locale: localeCodec.decode(data['locale']),
+      decorationColor: colorCodec.decode(data['decorationColor']),
       decorationStyle: TextDecorationStyle.values[data['decorationStyle'] ?? 0],
       decorationThickness: data['decorationThickness'],
       fontFamily: data['fontFamily'],
@@ -137,9 +153,12 @@ class TextStyleCodec extends PresetCodec<TextStyle> {
 }
 
 class LocaleCodec extends PresetCodec<Locale> {
+  //...Fields
+  const LocaleCodec();
+
   //...Methods
   @override
-  Map<String, dynamic> en(Locale? obj) {
+  Map<String, dynamic> encode(Locale? obj) {
     if (obj == null) return {};
     return {
       'languageCode': obj.languageCode,
@@ -149,7 +168,7 @@ class LocaleCodec extends PresetCodec<Locale> {
   }
 
   @override
-  Locale? de(Map<String, dynamic>? data) {
+  Locale? decode(Map<String, dynamic>? data) {
     if (data == null || data.isEmpty) return null;
     return Locale.fromSubtags(
       languageCode: data['languageCode'] ?? 'und',
@@ -160,15 +179,18 @@ class LocaleCodec extends PresetCodec<Locale> {
 }
 
 class ColorCodec extends PresetCodec<Color> {
+  //...Fields
+  const ColorCodec();
+
   //...Methods
   @override
-  Map<String, dynamic> en(Color? obj) {
+  Map<String, dynamic> encode(Color? obj) {
     if (obj == null) return {};
     return {'value': obj.value};
   }
 
   @override
-  Color? de(Map<String, dynamic>? data) {
+  Color? decode(Map<String, dynamic>? data) {
     if (data == null || data.isEmpty) return null;
     return Color(data['value']);
   }

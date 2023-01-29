@@ -10,12 +10,12 @@ abstract class ValuePreset<T extends ValuePreset<T>> extends ThemeExtension<T> {
   //...Fields
   const ValuePreset();
 
-  static T of<T extends ValuePreset<T>>(BuildContext context) {
+  static T? of<T extends ValuePreset<T>>(BuildContext context) {
     //...
     try {
       return Theme.of(context).extension<T>()!;
     } catch (e) {
-      throw (Exception('$T was not found in the given context'));
+      return null;
     }
   }
 

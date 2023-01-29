@@ -8,13 +8,15 @@ import '../presets/glyph.dart';
 class Preset extends StatelessWidget {
   //...Fields
   final Iterable<ValuePreset> presets;
-  final Iterable<ThemeExtension> themes;
+  final Iterable<ThemeExtension> extensions;
+  final ThemeData? distribution;
   final Widget? child;
 
   const Preset({
     super.key,
     this.presets = const {},
-    this.themes = const {},
+    this.extensions = const {},
+    this.distribution,
     this.child,
   });
 
@@ -34,9 +36,8 @@ class Preset extends StatelessWidget {
         //...
         final colors = ColorPreset.of(context);
         final glyphs = GlyphPreset.of(context);
-        //...
-        return Theme(
-          data: ThemeData(
+        final theme = distribution ??
+            ThemeData(
               colorSchemeSeed: colors.primary,
               textTheme: glyphs.normal,
               iconTheme: IconThemeData(
@@ -183,10 +184,16 @@ class Preset extends StatelessWidget {
               splashColor: colors.tint,
               hoverColor: colors.shade,
               focusColor: colors.shade,
-              extensions: {
-                ...Theme.of(context).extensions.values,
-                ...themes,
-              }),
+            );
+        //...
+        return Theme(
+          data: theme.copyWith(
+            extensions: {
+              ...Theme.of(context).extensions.values,
+              ...theme.extensions.values,
+              ...extensions,
+            },
+          ),
           child: child ?? const SizedBox(),
         );
       }),

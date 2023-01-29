@@ -13,7 +13,7 @@ abstract class PresetBuilder {
   Widget call(BuildContext context, Widget? child) {
     return Preset(
       presets: presets,
-      themes: themes,
+      extensions: themes,
       child: child,
     );
   }
