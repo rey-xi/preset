@@ -6,11 +6,35 @@ import 'package:flutter/material.dart';
 
 part 'preset_codec.dart';
 
-abstract class ValuePreset<T extends ValuePreset<T>> extends ThemeExtension<T> {
+/// ## Preset Value
+/// Preset encodable value that gives you access to preset
+/// codec tools. Extend this class to define your own custom
+/// preset value.
+///
+/// ```dart
+/// class ValuePreset extends PresetValue<ValuePreset> {
+///   //...Methods
+///   @override
+///   ValuePreset copyWith() {...}
+//
+///   @override
+///   ValuePreset lerp(other, double t) {...}
+//
+///   @override
+///   ValuePreset merge(other) {...}
+//
+///   @override
+///   Map<String, dynamic> toJson() {...}
+/// }
+/// ```
+abstract class PresetValue<T extends PresetValue<T>> extends ThemeExtension<T> {
   //...Fields
-  const ValuePreset();
+  const PresetValue();
 
-  static T? of<T extends ValuePreset<T>>(BuildContext context) {
+  /// Retrieve an instance of [PresetValue] of type [T] from
+  /// [context]. If context doesn't contain any [PresetValue]
+  /// instance of type [T], this method will return null.
+  static T? of<T extends PresetValue<T>>(BuildContext context) {
     //...
     try {
       return Theme.of(context).extension<T>()!;
@@ -19,7 +43,11 @@ abstract class ValuePreset<T extends ValuePreset<T>> extends ThemeExtension<T> {
     }
   }
 
-  static Map<String, dynamic> parse<T extends ValuePreset<T>>(String source) {
+  /// Retrieve an instance of [PresetValue] of type [T] from
+  /// [context]. The returned instance of [T] will be in it's
+  /// encoded form. Implement [T.fromJson] to decode an actual
+  /// instance of [T] from the data returned.
+  static Map<String, dynamic> parse<T extends PresetValue<T>>(String source) {
     //...
     final regex = RegExp(r'(\w+)(<[\w,]>)?\(({[:\w\s,"{}.]*\})\)');
     final match = regex.matchAsPrefix(source); // regex match data
@@ -37,8 +65,15 @@ abstract class ValuePreset<T extends ValuePreset<T>> extends ThemeExtension<T> {
   }
 
   //...Methods
+  /// merge [other] into this preset. Works as [copyWith]
+  /// with all it's entry arguments assigned to [other]'s
+  /// corresponding fields.
   T merge(T? other);
 
+  /// Convert this preset value to its encodable hashmap of
+  /// [String] to it's encodable data. Override this method
+  /// to declare how this field can be converted to it's
+  /// encodable version.
   Map<String, dynamic> toJson();
 
   @override

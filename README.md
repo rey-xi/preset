@@ -3,7 +3,6 @@
 Advanced theme management system integrated with string codec to make user
 preferences storage explicit for developers
 
-
 ## Getting Started
 
 `pubspec.yaml`
@@ -43,119 +42,144 @@ dependencies:
 
 ```
 
-## Preset
-
-The main widget that can be used to pass preset values across the context. Also provides 
-room for custom usage distribution and shortcut access to assign preset values details to
-unrecognized theme extensions. 
-
-#### Example:
-```dart
-import 'package:flutter/material.dart';
-import 'package:preset/preset.dart';
-
-
-class PresetApp extends StatelessWidget {
-  const PresetExample({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Transform(
-              transform: Mat3D().scale(1.5).forward(24).matrix,
-              child: const Text("Transformed"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-```
-
-
-- **Raw Constructor:** Mat3D can be created to tweak a Matrix4 value using
-  a given rect.
-
-#### Example:
-```dart
-main() {
-  final matrix4 = Matrix4.identity();
-  final rect = Offset.zero & const Size.square(100);
-  final mat3D = Mat3D.raw(rect: rect, matrix: matrix4);
-
-  /// changes to [mat3D] reflects on [matrix4]
-  print(mat3D); // Mat3D[...](0, 0, 100, 100)
-}
-```
-
-
-- **Parse Constructor:** Mat3D can be composed from a string source: result
-  calling [.toString()] on a Mat3D object.
-
-#### Example:
-```dart
-main() {
-  final matrix4 = Matrix4.identity();
-  final rect = Offset.zero & const Size.square(100);
-  final mat3D = Mat3D(rect: rect, matrix: matrix4);
-  print(mat3D);  // Mat3D[0, 1.0, 1.0...](0, 0, 100, 100)
-  final mat3D2 = Mat3D.parse('$mat3D');
-  print(mat3D2);  // Mat3D[0, 1.0, 1.0...](0, 0, 100, 100)
-}
-```
-
-
-- **Copy Constructor:** Mat3D can be duplicated as redirection from another
-- 
-- 
-
-#### Example:
-```dart
-main() {
-  final matrix4 = Matrix4.identity();
-  final rect = Offset.zero & const Size.square(100);
-  final mat3D = Mat3D.raw(rect: rect, matrix: matrix4);
-  print(mat3D); // Mat3D[0, 1.0, 1.0...](0, 0, 100, 100)
-  final mat3D2 = Mat3D.from(mat3D);
-
-  /// changes to [mat3D2] reflects on [mat3D]
-  print(mat3D2); // Mat3D[0, 1.0, 1.0...](0, 0, 100, 100)
-}
-```
-
 ## Usage
 
+#### Preset
+
+The basic and core method to declare presets. The values of presets will be
+passed down to child and it's hierarchy via context.
+
+
+#### Preset App
+
+PresetApp is the most basic way to implement the preset library in your app. 
+PresetApp is a direct subclass of MaterialApp with additional argument to 
+assign default presets 
+
+###### Example
+```dart
+@override
+Widget build(BuildContext context) {
+  //...
+   return PresetApp(
+      title: 'Preset App',
+      home: const PresetHome(),
+      preset: {
+        ColorPreset.internal,
+        GlyphPreset.redmond,
+      }
+   );
+}
+```
+
+
+#### Preset Builder
+
+Preset builder instances can be assigned to MaterialApp.builder of the 
+conventional material app: If making use of the conventional Material app 
+is important, making use of this method can come in handy.
+
+###### Example
+```dart
+@override
+Widget build(BuildContext context) {
+  //...
+  return MaterialApp(
+    //...
+    builder: PresetBuilder(
+      preset: {
+        ColorPreset.internal,
+        GlyphPreset.redmond,
+      },
+      implementation: implementation,
+    ),
+  );
+}
+```
+
+
+#### Preset Codec
+
+Conversion algorithm for Preset and PresetValue. Few default preset codecs 
+have been declared in the library including:
+
+- qTextTheme or TextThemeCodec for **TextTheme**
+- qTextStyle or TextStyleCodec for **TextStyle**
+- qLocale or LocaleCodec for **Locale**
+- qColor or ColorCodec for **Color**
+
+###### Example
+```dart
+ encode(TextStyle obj) {
+   final type1 = qTextStyle.encode(obj);
+   final type2 = TextStyleCodec().encode(obj);
+ }
+```
+
+
+#### Preset Impl
+
+Preset values implementor class. A typical consumer class for preset values.
+Basically, PresetImpl is meant to implement the preset values in MaterialApp
+as MaterialApp.theme and ThemeData.extensions
+
+###### Example
+```dart
+  @override
+Widget build(BuildContext context) {
+  //...
+  return Container(
+    child: PresetImpl(
+      theme: theme,
+      extensions: extensions,
+      child: child,
+    ),
+  );
+}
+```
+
+
+
+## Working Example:
 ```dart
 import 'package:flutter/material.dart';
-import 'package:mat3d/mat3d.dart';
+import 'package:popup/popup.dart';
+import 'package:preset/preset.dart' as preset;
+import 'package:rey_xi/screens/splash.dart';
+import 'package:text2/text2.dart';
 
+void main() {
+  runApp(const PresetApp());
+}
 
-class Mat3DExample extends StatelessWidget {
-  const Mat3DExample({Key? key}) : super(key: key);
+class PresetApp extends StatelessWidget {
+  //...Fields
+  const PresetApp({super.key});
 
+  //...Methods
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Transform(
-              transform: Mat3D().scale(1.5).forward(24).matrix,
-              child: const Text("Transformed"),
-            ),
-          ],
-        ),
-      ),
+    //...
+    return preset.PresetApp(
+      title: 'Nueli',
+      home: const PresetSplash(),
+      defaultPresets: const [
+        ColorPreset(
+          primary: Color(0xFF7E677E),
+          foreground: Color(0xFF6E6A6E),
+          secondary: Color(0xffd08686),
+          success: Color(0xff499f51),
+          error: Color(0xffdc5856),
+          warning: Color(0xffe5ad71),
+          background: Color(0xffe1dacb),
+          ascent: Color(0xffe7cfae),
+          shade: Color(0x5a75503d),
+          tint: Color(0x5af5ede2),
+        ), 
+        GlyphPreset.mountainView,
+      ],
     );
   }
 }
-
 ```
-### Thanks
+### Thanks.

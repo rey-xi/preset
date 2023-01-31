@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:preset/preset.dart';
+import 'package:qp_xt/qp_xt.dart';
 
 import '../core/preset_value.dart';
 
-class ColorPreset extends ValuePreset<ColorPreset> {
+/// ## Color Preset
+/// [Color] implementation of [PresetValue].
+///
+/// ```dart
+/// ColorPreset(
+///   foreground: Color(0xFF6B6266),
+///   background: Color(0xffe1dacb),
+///   primary: Color(0xFF887384),
+///   secondary: Color(0xffec712d),
+///   ascent: Color(0xffe7cfae),
+///   success: Color(0xff499f51),
+///   error: Color(0xffda7673),
+///   warning: Color(0xffe5ad71),
+///   tint: Color(0x5af5ede2),
+///   shade: Color(0x5a75503d),
+/// );
+/// ```
+class ColorPreset extends PresetValue<ColorPreset> {
   //...Constants
   static const internal = ColorPreset(
     foreground: Color(0xFF6B6266),
@@ -14,8 +32,8 @@ class ColorPreset extends ValuePreset<ColorPreset> {
     success: Color(0xff499f51),
     error: Color(0xffda7673),
     warning: Color(0xffe5ad71),
-    tint: Color(0x1df5ede2),
-    shade: Color(0x1d75503d),
+    tint: Color(0x5af5ede2),
+    shade: Color(0x5a75503d),
   );
 
   //...Fields
@@ -37,25 +55,40 @@ class ColorPreset extends ValuePreset<ColorPreset> {
     required this.shade,
   });
 
+  /// Retrieve ColorPreset instance form [context].
+  /// If context has no instance of ColorPreset in it,
+  /// [ColorPreset.internal] is returned.
   factory ColorPreset.of(BuildContext context) {
     //...
-    return ValuePreset.of<ColorPreset>(context) ?? internal;
+    final colors = PresetValue.of<ColorPreset>(context);
+    return colors ?? internal;
   }
 
+  /// Retrieve ColorPreset instance form [source].
+  /// If [source] is not valid, [ColorPreset.internal]
+  /// is returned.
   factory ColorPreset.parse(String source) {
     //...
-    final data = ValuePreset.parse<ColorPreset>(source);
+    final data = PresetValue.parse<ColorPreset>(source);
+    return ColorPreset.fromJson(data);
+  }
+
+  /// Retrieve ColorPreset instance form [data].
+  /// If [data] is not valid, [ColorPreset.internal]
+  /// is returned.
+  factory ColorPreset.fromJson(Map<String, dynamic> data) {
+    //...
     return ColorPreset(
-      foreground: colorCodec.decode(data['foreground']) ?? internal.foreground,
-      background: colorCodec.decode(data['background']) ?? internal.background,
-      primary: colorCodec.decode(data['primary']) ?? internal.primary,
-      secondary: colorCodec.decode(data['secondary']) ?? internal.secondary,
-      ascent: colorCodec.decode(data['ascent']) ?? internal.ascent,
-      success: colorCodec.decode(data['success']) ?? internal.success,
-      error: colorCodec.decode(data['error']) ?? internal.error,
-      warning: colorCodec.decode(data['warning']) ?? internal.warning,
-      tint: colorCodec.decode(data['tint']) ?? internal.tint,
-      shade: colorCodec.decode(data['shade']) ?? internal.shade,
+      foreground: qColor.decode(data['foreground']) ?? internal.foreground,
+      background: qColor.decode(data['background']) ?? internal.background,
+      primary: qColor.decode(data['primary']) ?? internal.primary,
+      secondary: qColor.decode(data['secondary']) ?? internal.secondary,
+      ascent: qColor.decode(data['ascent']) ?? internal.ascent,
+      success: qColor.decode(data['success']) ?? internal.success,
+      error: qColor.decode(data['error']) ?? internal.error,
+      warning: qColor.decode(data['warning']) ?? internal.warning,
+      tint: qColor.decode(data['tint']) ?? internal.tint,
+      shade: qColor.decode(data['shade']) ?? internal.shade,
     );
   }
 
@@ -155,21 +188,36 @@ class ColorPreset extends ValuePreset<ColorPreset> {
   @override
   Map<String, dynamic> toJson() {
     return {
-      'foreground': colorCodec.encode(foreground),
-      'background': colorCodec.encode(background),
-      'primary': colorCodec.encode(primary),
-      'secondary': colorCodec.encode(secondary),
-      'ascent': colorCodec.encode(ascent),
-      'success': colorCodec.encode(success),
-      'error': colorCodec.encode(error),
-      'warning': colorCodec.encode(warning),
-      'tint': colorCodec.encode(tint),
-      'shade': colorCodec.encode(shade),
+      'foreground': qColor.encode(foreground),
+      'background': qColor.encode(background),
+      'primary': qColor.encode(primary),
+      'secondary': qColor.encode(secondary),
+      'ascent': qColor.encode(ascent),
+      'success': qColor.encode(success),
+      'error': qColor.encode(error),
+      'warning': qColor.encode(warning),
+      'tint': qColor.encode(tint),
+      'shade': qColor.encode(shade),
     };
+  }
+
+  List<Color> toList() {
+    return [
+      foreground,
+      background,
+      primary,
+      secondary,
+      ascent,
+      success,
+      warning,
+      error,
+      tint,
+      shade,
+    ];
   }
 }
 
 extension ContextColorPreset on BuildContext {
   //...Getters
-  ColorPreset get colorPreset => ColorPreset.of(this);
+  ColorPreset get colors => ColorPreset.of(this);
 }

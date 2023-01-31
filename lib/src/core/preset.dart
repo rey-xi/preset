@@ -1,269 +1,60 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:preset/src/core/preset_value.dart';
+import 'package:preset/preset.dart';
 
-import '../presets/color.dart';
-import '../presets/glyph.dart';
-
-class Preset extends StatelessWidget {
+/// ## Preset
+/// The basic and core method to declare presets.
+/// The values of [presets] will be passed down to
+/// [child] and it's hierarchy via context.
+///
+/// ```dart
+/// @override
+/// Widget build(BuildContext context) {
+///    return Preset(
+///       preset: {
+///         ColorPreset.internal,
+///         GlyphPreset.redmond,
+///       }
+///       child: Container(
+///          width: double.infinity,
+///          ...
+///       )
+///    );
+/// }
+/// ```
+class Preset extends StatefulWidget {
   //...Fields
-  final Iterable<ValuePreset> presets;
-  final Iterable<ThemeExtension> extensions;
-  final ThemeData? distribution;
-  final Widget? child;
+  /// Set of default preset values the app runs with.
+  /// Defined preset values serve as fallback during
+  /// used by implementations.
+  final Set<PresetValue> presets;
+
+  /// Unto the next generation of widgets that is
+  /// affected by this Impl implementation.
+  final Widget child;
 
   const Preset({
     super.key,
     this.presets = const {},
-    this.extensions = const {},
-    this.distribution,
-    this.child,
+    required this.child,
   });
 
+  @override
+  State<Preset> createState() => _PresetState();
+}
+
+class _PresetState extends State<Preset> {
   //...Methods
   @override
   Widget build(BuildContext context) {
     //...
-    Widget? child = this.child;
     return Theme(
       data: Theme.of(context).copyWith(
         extensions: {
           ...Theme.of(context).extensions.values,
-          ...presets,
+          ...widget.presets,
         },
       ),
-      child: Builder(builder: (context) {
-        //...
-        final colors = ColorPreset.of(context);
-        final glyphs = GlyphPreset.of(context);
-        final theme = distribution ??
-            ThemeData(
-              primarySwatch: colors.swatch,
-              textTheme: glyphs.normal,
-              iconTheme: IconThemeData(
-                color: colors.primary,
-                size: 24,
-              ),
-              primaryIconTheme: IconThemeData(
-                color: colors.primary,
-              ),
-              primaryTextTheme: glyphs.primary,
-              dividerTheme: DividerThemeData(
-                color: colors.foregroundX(255),
-                thickness: .2,
-                endIndent: 8,
-                indent: 8,
-                space: 8,
-              ),
-              appBarTheme: AppBarTheme(
-                color: colors.background,
-                shadowColor: colors.shade,
-                foregroundColor: colors.primary,
-                systemOverlayStyle: SystemUiOverlayStyle(
-                  statusBarColor: colors.primary,
-                  systemNavigationBarColor: colors.primary,
-                ),
-              ),
-              drawerTheme: DrawerThemeData(
-                backgroundColor: colors.background,
-                scrimColor: colors.shade,
-              ),
-              buttonTheme: ButtonThemeData(
-                textTheme: ButtonTextTheme.primary,
-                buttonColor: colors.primary,
-                minWidth: 24,
-              ),
-              textButtonTheme: TextButtonThemeData(
-                style: ButtonStyle(
-                  splashFactory: InkSplash.splashFactory,
-                  foregroundColor: MaterialStateColor.resolveWith((states) {
-                    final pressed = states.contains(MaterialState.pressed);
-                    return pressed ? colors.primal : colors.primary;
-                  }),
-                ),
-              ),
-              elevatedButtonTheme: ElevatedButtonThemeData(
-                style: ButtonStyle(
-                  splashFactory: InkSplash.splashFactory,
-                  backgroundColor: MaterialStateColor.resolveWith((states) {
-                    final pressed = states.contains(MaterialState.pressed);
-                    return pressed ? colors.primalX(180) : colors.primalX(150);
-                  }),
-                  foregroundColor: MaterialStateColor.resolveWith((states) {
-                    final pressed = states.contains(MaterialState.pressed);
-                    return pressed ? colors.ascent : colors.background;
-                  }),
-                  shape: MaterialStateProperty.resolveWith((states) {
-                    final pressed = states.contains(MaterialState.pressed);
-                    return RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(pressed ? 16 : 8),
-                    );
-                  }),
-                  elevation: MaterialStateProperty.resolveWith((states) {
-                    final pressed = states.contains(MaterialState.pressed);
-                    return pressed ? 4 : 2;
-                  }),
-                  shadowColor: MaterialStateColor.resolveWith((states) {
-                    final pressed = states.contains(MaterialState.pressed);
-                    return pressed ? colors.primary : colors.subtle;
-                  }),
-                ),
-              ),
-              checkboxTheme: CheckboxThemeData(
-                checkColor: MaterialStateColor.resolveWith((states) {
-                  final selected = states.contains(MaterialState.selected);
-                  return selected ? colors.background : colors.primary;
-                }),
-                fillColor: MaterialStateColor.resolveWith((states) {
-                  final selected = states.contains(MaterialState.selected);
-                  return selected ? colors.primary : colors.primaryX(100);
-                }),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                ),
-              ),
-              inputDecorationTheme: InputDecorationTheme(
-                isDense: false,
-                hintStyle: glyphs.subtle.bodyMedium,
-                helperStyle: MaterialStateTextStyle.resolveWith((states) {
-                  final focused = states.contains(MaterialState.focused);
-                  if (focused) {
-                    return glyphs.primal.bodySmall!;
-                  } else {
-                    return glyphs.primary.bodySmall!;
-                  }
-                }),
-                counterStyle: glyphs.primary.bodySmall,
-                errorStyle: glyphs.error.bodySmall,
-                prefixStyle: glyphs.normal.bodyMedium,
-                suffixStyle: glyphs.normal.bodyMedium,
-                prefixIconColor: MaterialStateColor.resolveWith((states) {
-                  final focused = states.contains(MaterialState.focused);
-                  return focused ? colors.primal : colors.primary;
-                }),
-                suffixIconColor: MaterialStateColor.resolveWith((states) {
-                  final focused = states.contains(MaterialState.focused);
-                  return focused ? colors.primal : colors.primary;
-                }),
-                floatingLabelStyle: MaterialStateTextStyle.resolveWith((states) {
-                  final focused = states.contains(MaterialState.focused);
-                  if (focused) {
-                    return glyphs.primal.bodyMedium!;
-                  } else {
-                    return glyphs.primary.bodyMedium!;
-                  }
-                }),
-                labelStyle: MaterialStateTextStyle.resolveWith((states) {
-                  final focused = states.contains(MaterialState.focused);
-                  if (focused) {
-                    return glyphs.primal.bodyMedium!;
-                  } else {
-                    return glyphs.primary.bodyMedium!;
-                  }
-                }),
-                enabledBorder: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(4.0)),
-                  borderSide: BorderSide(width: .5, color: colors.primary),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(4.0)),
-                  borderSide: BorderSide(width: 1.8, color: colors.primal),
-                ),
-                errorBorder: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(4.0)),
-                  borderSide: BorderSide(width: .5, color: colors.error),
-                ),
-                focusedErrorBorder: UnderlineInputBorder(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(4.0)),
-                  borderSide: BorderSide(width: 1.5, color: colors.error),
-                ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-              ),
-              scaffoldBackgroundColor: colors.background,
-              highlightColor: colors.tint,
-              splashColor: colors.tint,
-              hoverColor: colors.shade,
-              focusColor: colors.shade,
-            );
-        //...
-        return Theme(
-          data: theme.copyWith(
-            extensions: {
-              ...Theme.of(context).extensions.values,
-              ...theme.extensions.values,
-              ...extensions,
-            },
-          ),
-          child: child ?? const SizedBox(),
-        );
-      }),
+      child: widget.child,
     );
-  }
-}
-
-extension Number<T extends num> on T {
-  //...Methods
-  /// Returns positive version of number. It's achieved
-  /// by finding the square root of the square of number.
-  /// In other words: √num²
-  /// ```dart
-  /// print(-2.prime()); // 2;
-  /// ```
-  T prime([int seed = 1]) {
-    final num = math.sqrt(math.pow(this, 2));
-    if (T == int) return (num * seed).round() as T;
-    if (T == double) return (num * seed).toDouble() as T;
-    return (num * seed) as T;
-  }
-
-  /// Return's the minimum number between this number and
-  /// [t]. Same as [math.min] between this number and
-  /// [t]. In other words, y = x < other? x : other
-  /// ```dart
-  /// print(2.max(3)); // 2;
-  /// ```
-  T min(T? t) => t != null ? math.min(this, t) : this;
-}
-
-extension Numbers<T extends num> on Iterable<T> {
-  /// Return's the minimum number from the list
-  /// ```dart
-  /// print([2, 3].min); // 2;
-  /// ```
-  T get min {
-    T min = first;
-    for (T number in this) {
-      min = min.min(number);
-    }
-    return min;
-  }
-}
-
-extension Swatch<T extends Color> on T {
-  //...Methods
-  /// compare color values with [other] color values.
-  /// [precision] will be used to constrain the accuracy
-  /// of the formula.
-  double difference(Color other, [double precision = 510.0]) {
-    final a = (other.alpha - alpha).prime(1);
-    final r = (other.red - red).prime(1);
-    final g = (other.green - green).prime(1);
-    final b = (other.blue - blue).prime(1);
-    return math.sqrt(a ^ 2 + r ^ 2 + g ^ 2 + b ^ 2) / 510.0 * precision;
-  }
-}
-
-extension Swatches<T extends Color> on Iterable<T> {
-  //...Methods
-  /// compare color values of each color in this color list
-  /// with [other] color values and return the color with the
-  /// smallest difference based on [precision]
-  T closestTo(Color other, [double precision = 510.0]) {
-    //...
-    final differences = map((e) => e.difference(other, precision));
-    final minIndex = differences.toList().indexOf(differences.min);
-    return elementAt(minIndex);
   }
 }
