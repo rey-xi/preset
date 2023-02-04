@@ -146,24 +146,45 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
 
   //...Getters
   TextTheme get onPrimary {
-    final primaryQ = primary.bodyMedium?.color?.isLight;
-    final foreQ = foreground.bodyMedium?.color?.isDark;
-    if (primaryQ == foreQ) return _primary ?? foreground;
-    return _primary ?? background;
+    final colors = [
+      foreground.bodySmall?.color ?? Colors.white,
+      background.bodySmall?.color ?? Colors.grey,
+    ];
+    const cc = Colors.white;
+    final color = primary.bodySmall?.color ?? cc;
+    final onPrimary = primary.apply(
+      displayColor: colors.farthestFrom(color),
+      bodyColor: colors.farthestFrom(color),
+    );
+    return _primary ?? onPrimary;
   }
 
   TextTheme get onSecondary {
-    final secondaryQ = secondary.bodyMedium?.color?.isLight;
-    final foreQ = foreground.bodyMedium?.color?.isDark;
-    if (secondaryQ == foreQ) return _secondary ?? foreground;
-    return _secondary ?? background;
+    final colors = [
+      foreground.bodySmall?.color ?? Colors.white,
+      background.bodySmall?.color ?? Colors.grey,
+    ];
+    const cc = Colors.white;
+    final color = secondary.bodySmall?.color ?? cc;
+    final onSecondary = secondary.apply(
+      displayColor: colors.farthestFrom(color),
+      bodyColor: colors.farthestFrom(color),
+    );
+    return _secondary ?? onSecondary;
   }
 
   TextTheme get onAscent {
-    final ascentQ = ascent.bodyMedium?.color?.isLight;
-    final foreQ = foreground.bodyMedium?.color?.isDark;
-    if (ascentQ == foreQ) return _ascent ?? foreground;
-    return _ascent ?? background;
+    final colors = [
+      foreground.bodySmall?.color ?? Colors.white,
+      background.bodySmall?.color ?? Colors.grey,
+    ];
+    const cc = Colors.white;
+    final color = ascent.bodySmall?.color ?? cc;
+    final onAscent = ascent.apply(
+      displayColor: colors.farthestFrom(color),
+      bodyColor: colors.farthestFrom(color),
+    );
+    return _ascent ?? onAscent;
   }
 
   TextTheme get primal {
@@ -230,8 +251,8 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
       secondary: apply(this.secondary, merge(secondary, palette?.secondary)),
       ascent: apply(this.ascent, merge(ascent, palette?.ascent)),
       //...on surface
-      onPrimary: apply(_primary, merge(onPrimary, palette?.onPrimary)),
-      onSecondary: apply(_secondary, merge(onSecondary, palette?.onSecondary)),
+      onPrimary: apply(_primary, merge(onPrimary, palette?.altPrimary)),
+      onSecondary: apply(_secondary, merge(onSecondary, palette?.altSecondary)),
       onAscent: apply(_ascent, merge(onAscent, palette?.onAscent)),
       //...extras
       success: apply(this.success, merge(success, palette?.success)),
@@ -296,8 +317,8 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
       secondary: sudo(this.secondary, palette?.secondary, secondary),
       ascent: sudo(this.ascent, palette?.ascent, ascent),
       //...on surface
-      onPrimary: sudo(this.onPrimary, palette?.onPrimary, onPrimary),
-      onSecondary: sudo(this.onSecondary, palette?.onSecondary, onSecondary),
+      onPrimary: sudo(this.onPrimary, palette?.altPrimary, onPrimary),
+      onSecondary: sudo(this.onSecondary, palette?.altSecondary, onSecondary),
       onAscent: sudo(this.onAscent, palette?.onAscent, onAscent),
       //...extras
       success: sudo(this.success, palette?.success, success),

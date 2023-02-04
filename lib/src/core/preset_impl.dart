@@ -95,7 +95,7 @@ class PresetImplement extends StatelessWidget {
       appBarTheme: AppBarTheme(
         color: context.colors.primary,
         shadowColor: context.colors.shade,
-        foregroundColor: context.colors.onPrimary,
+        foregroundColor: context.colors.altPrimary,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: context.colors.primary,
           systemNavigationBarColor: context.colors.primary,
@@ -117,7 +117,7 @@ class PresetImplement extends StatelessWidget {
         size: 24,
       ),
       primaryIconTheme: IconThemeData(
-        color: context.colors.onPrimary,
+        color: context.colors.altPrimary,
       ),
       buttonTheme: ButtonThemeData(
         textTheme: ButtonTextTheme.primary,

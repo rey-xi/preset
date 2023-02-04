@@ -113,31 +113,19 @@ class ColorPreset extends PresetValue<ColorPreset> {
     return _swatch ?? Colors.primaries.closestTo(primary);
   }
 
-  Color get onPrimary {
-    final primaryQ = primary.isLight;
-    final foreQ = foreground.isDark;
-    if (primaryQ == foreQ) {
-      return _primary ?? foreground;
-    }
-    return _primary ?? background;
+  Color get altPrimary {
+    final colors = [foreground, background];
+    return _primary ?? colors.farthestFrom(primary);
   }
 
-  Color get onSecondary {
-    final secondaryQ = secondary.isLight;
-    final foreQ = foreground.isDark;
-    if (secondaryQ == foreQ) {
-      return _secondary ?? foreground;
-    }
-    return _secondary ?? background;
+  Color get altSecondary {
+    final colors = [foreground, background];
+    return _secondary ?? colors.farthestFrom(secondary);
   }
 
   Color get onAscent {
-    final ascentQ = ascent.isLight;
-    final foreQ = foreground.isDark;
-    if (ascentQ == foreQ) {
-      return _ascent ?? foreground;
-    }
-    return _ascent ?? background;
+    final colors = [foreground, background];
+    return _ascent ?? colors.farthestFrom(ascent);
   }
 
   Color get primal {
@@ -255,8 +243,8 @@ class ColorPreset extends PresetValue<ColorPreset> {
       'secondary': qColor.encode(secondary),
       'ascent': qColor.encode(ascent),
       //...on surface
-      'onPrimary': qColor.encode(onPrimary),
-      'onSecondary': qColor.encode(onSecondary),
+      'onPrimary': qColor.encode(altPrimary),
+      'onSecondary': qColor.encode(altSecondary),
       'onAscent': qColor.encode(onAscent),
       //...extras
       'success': qColor.encode(success),
