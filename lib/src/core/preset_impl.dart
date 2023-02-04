@@ -78,7 +78,6 @@ class PresetImplement extends StatelessWidget {
       textTheme: context.glyphs.foreground,
       primaryTextTheme: context.glyphs.onPrimary,
       scaffoldBackgroundColor: context.colors.background,
-      backgroundColor: context.colors.background,
       primaryColor: context.colors.primary,
       canvasColor: context.colors.background,
       cardColor: context.colors.background.addBrightness(.1),
@@ -241,7 +240,7 @@ class PresetImplement extends StatelessWidget {
       ),
       bannerTheme: MaterialBannerThemeData(
         backgroundColor: context.colors.background.addBrightness(.1),
-        contentTextStyle: context.glyphs.foreground.caption,
+        contentTextStyle: context.glyphs.foreground.bodySmall,
         elevation: 6,
       ),
       bottomSheetTheme: BottomSheetThemeData(
