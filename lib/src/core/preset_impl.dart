@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:preset/preset.dart';
+import 'package:qp_xt/qp_xt.dart';
 
-/// ## Preset Impl
+/// ## Preset Implement
 /// Preset values implementor class. A typical consumer
-/// class for preset values. Basically, [PresetImpl] is
-/// meant to implement the preset values in [MaterialApp]
-/// as [MaterialApp.theme] and [ThemeData.extensions]
+/// class for preset values. Basically, [PresetImplement]
+/// help to implement the preset values in [MaterialApp],
+/// [MaterialApp.theme] and [ThemeData.extensions]
 /// ```dart
 /// PresetImpl(
 ///    theme: theme,
@@ -14,12 +15,12 @@ import 'package:preset/preset.dart';
 ///    child: child,
 /// );
 /// ```
-class PresetImpl extends StatelessWidget {
+class PresetImplement extends StatelessWidget {
   //...Fields
   /// Consumer theme that defines how this impl will
   /// implement preset values into the conventional
   /// material theme data.
-  final ThemeData? theme;
+  final ThemeData Function(ThemeData theme)? updateTheme;
 
   /// Implement preset values into the conventional
   /// material theme extension.
@@ -29,31 +30,35 @@ class PresetImpl extends StatelessWidget {
   /// affected by this Impl implementation.
   final Widget? child;
 
-  const PresetImpl({
+  const PresetImplement({
     super.key,
-    this.theme,
+    this.updateTheme,
     this.extensions = const {},
     this.child,
   });
 
   //...Methods
-  PresetImpl copyWith({
+  PresetImplement copyWith({
     Widget? child,
-    ThemeData? theme,
+    ThemeData Function(ThemeData theme)? updateTheme,
     Set<ThemeExtension>? extensions,
   }) {
-    return PresetImpl(
-      theme: theme ?? this.theme,
+    return PresetImplement(
+      updateTheme: updateTheme ?? this.updateTheme,
       extensions: extensions ?? this.extensions,
       child: child ?? this.child,
     );
   }
 
+  @protected
+  ThemeData _updateTheme(ThemeData theme) {
+    return updateTheme?.call(theme) ?? theme;
+  }
+
   @override
   Widget build(BuildContext context) {
     //...
-    final theme = this.theme ?? themeOf(context);
-    //...
+    final theme = _updateTheme(themeOf(context));
     return Theme(
       data: theme.copyWith(
         extensions: {
@@ -70,26 +75,28 @@ class PresetImpl extends StatelessWidget {
     //...
     return ThemeData(
       primarySwatch: context.colors.swatch,
-      textTheme: context.glyphs.normal,
-      iconTheme: IconThemeData(
-        color: context.colors.primary,
-        size: 24,
-      ),
-      primaryIconTheme: IconThemeData(
-        color: context.colors.primary,
-      ),
-      primaryTextTheme: context.glyphs.primary,
-      dividerTheme: DividerThemeData(
-        color: context.colors.foregroundX(255),
-        thickness: .2,
-        endIndent: 8,
-        indent: 8,
-        space: 8,
+      textTheme: context.glyphs.foreground,
+      primaryTextTheme: context.glyphs.onPrimary,
+      scaffoldBackgroundColor: context.colors.background,
+      backgroundColor: context.colors.background,
+      primaryColor: context.colors.primary,
+      canvasColor: context.colors.background,
+      cardColor: context.colors.background.addBrightness(.1),
+      highlightColor: context.colors.tint,
+      splashColor: context.colors.tint,
+      hoverColor: context.colors.shade.withAlpha(25),
+      focusColor: context.colors.shade,
+      brightness: context.colors.background.isDark //
+          ? Brightness.dark
+          : Brightness.light,
+      timePickerTheme: TimePickerThemeData(
+        backgroundColor: context.colors.background.addSaturation(-.1),
+        inputDecorationTheme: const InputDecorationTheme(),
       ),
       appBarTheme: AppBarTheme(
-        color: context.colors.background,
+        color: context.colors.primary,
         shadowColor: context.colors.shade,
-        foregroundColor: context.colors.primary,
+        foregroundColor: context.colors.onPrimary,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: context.colors.primary,
           systemNavigationBarColor: context.colors.primary,
@@ -99,10 +106,28 @@ class PresetImpl extends StatelessWidget {
         backgroundColor: context.colors.background,
         scrimColor: context.colors.shade,
       ),
+      dividerTheme: DividerThemeData(
+        color: context.colors.foreground.withAlpha(50),
+        thickness: .2,
+        endIndent: 8,
+        indent: 8,
+        space: 8,
+      ),
+      iconTheme: IconThemeData(
+        color: context.colors.foreground,
+        size: 24,
+      ),
+      primaryIconTheme: IconThemeData(
+        color: context.colors.onPrimary,
+      ),
       buttonTheme: ButtonThemeData(
         textTheme: ButtonTextTheme.primary,
         buttonColor: context.colors.primary,
         minWidth: 24,
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: context.colors.ascent,
+        foregroundColor: context.colors.onAscent,
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
@@ -118,7 +143,9 @@ class PresetImpl extends StatelessWidget {
           splashFactory: InkSplash.splashFactory,
           backgroundColor: MaterialStateColor.resolveWith((states) {
             final pressed = states.contains(MaterialState.pressed);
-            return pressed ? context.colors.primalX(180) : context.colors.primalX(150);
+            return pressed
+                ? context.colors.primal.withAlpha(180)
+                : context.colors.primal.withAlpha(150);
           }),
           foregroundColor: MaterialStateColor.resolveWith((states) {
             final pressed = states.contains(MaterialState.pressed);
@@ -147,7 +174,9 @@ class PresetImpl extends StatelessWidget {
         }),
         fillColor: MaterialStateColor.resolveWith((states) {
           final selected = states.contains(MaterialState.selected);
-          return selected ? context.colors.primary : context.colors.primaryX(100);
+          return selected
+              ? context.colors.primary.withAlpha(245)
+              : context.colors.primary.withAlpha(100);
         }),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -166,8 +195,8 @@ class PresetImpl extends StatelessWidget {
         }),
         counterStyle: context.glyphs.primary.bodySmall,
         errorStyle: context.glyphs.error.bodySmall,
-        prefixStyle: context.glyphs.normal.bodyMedium,
-        suffixStyle: context.glyphs.normal.bodyMedium,
+        prefixStyle: context.glyphs.foreground.bodyMedium,
+        suffixStyle: context.glyphs.foreground.bodyMedium,
         prefixIconColor: MaterialStateColor.resolveWith((states) {
           final focused = states.contains(MaterialState.focused);
           return focused ? context.colors.primal : context.colors.primary;
@@ -210,13 +239,50 @@ class PresetImpl extends StatelessWidget {
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
       ),
-      scaffoldBackgroundColor: context.colors.background,
-      highlightColor: context.colors.tint,
-      splashColor: context.colors.tint,
-      hoverColor: context.colors.shade.withAlpha(25),
-      focusColor: context.colors.shade,
+      bannerTheme: MaterialBannerThemeData(
+        backgroundColor: context.colors.background.addBrightness(.1),
+        contentTextStyle: context.glyphs.foreground.caption,
+        elevation: 6,
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: context.colors.background.addBrightness(.1),
+        modalBackgroundColor: context.colors.background,
+        modalElevation: 8,
+        elevation: 4,
+      ),
+      scrollbarTheme: ScrollbarThemeData(
+        thickness: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.dragged)) return 8;
+          if (states.contains(MaterialState.focused)) return .5;
+          if (states.contains(MaterialState.pressed)) return 16;
+          return 0;
+        }),
+        interactive: true,
+        minThumbLength: 24,
+        radius: const Radius.circular(16),
+        thumbColor: MaterialStateProperty.resolveWith((states) {
+          final dragged = states.contains(MaterialState.dragged);
+          final hovered = states.contains(MaterialState.hovered);
+          if (dragged) return context.colors.ascent;
+          if (hovered) return context.colors.ascent;
+          return context.colors.ascent.withAlpha(150);
+        }),
+        trackColor: MaterialStateProperty.resolveWith((states) {
+          final hovered = states.contains(MaterialState.hovered);
+          if (hovered) return context.colors.foreground;
+          return context.colors.foreground.withAlpha(25);
+        }),
+        trackBorderColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.hovered)) {
+            return context.colors.ascent.withAlpha(150);
+          }
+          return context.colors.ascent.withAlpha(10);
+        }),
+        thumbVisibility: MaterialStateProperty.all(true),
+        trackVisibility: MaterialStateProperty.all(true),
+      ),
     );
   }
 }
 
-typedef PresetImplementation = PresetImpl Function(BuildContext context);
+typedef PresetImplementation = PresetImplement Function(BuildContext context);

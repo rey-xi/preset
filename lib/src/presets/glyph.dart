@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:preset/preset.dart';
+import 'package:qp_xt/qp_xt.dart';
 
 /// ## Glyph Preset
 /// [Typography] implementation of [PresetValue].
 /// ```dart
 /// GlyphPreset(
-///   normal: Typography.blackRedmond,
 ///   alt: Typography.blackRedmond,
+///   normal: Typography.blackRedmond,
 ///   primary: Typography.blackRedmond,
 ///   secondary: Typography.blackRedmond,
 ///   ascent: Typography.blackRedmond,
@@ -19,8 +20,8 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   //...constants
   static const redmond = GlyphPreset(
     //...Redmond
-    normal: Typography.blackRedmond,
-    alt: Typography.blackRedmond,
+    foreground: Typography.blackRedmond,
+    background: Typography.blackRedmond,
     primary: Typography.blackRedmond,
     secondary: Typography.blackRedmond,
     ascent: Typography.blackRedmond,
@@ -31,8 +32,8 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
 
   //...Redwood City
   static const redwoodCity = GlyphPreset(
-    normal: Typography.blackRedwoodCity,
-    alt: Typography.blackRedwoodCity,
+    foreground: Typography.blackRedwoodCity,
+    background: Typography.blackRedwoodCity,
     primary: Typography.blackRedwoodCity,
     secondary: Typography.blackRedwoodCity,
     ascent: Typography.blackRedwoodCity,
@@ -43,8 +44,8 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
 
   //...Helsinki
   static const helsinki = GlyphPreset(
-    normal: Typography.blackHelsinki,
-    alt: Typography.blackHelsinki,
+    foreground: Typography.blackHelsinki,
+    background: Typography.blackHelsinki,
     primary: Typography.blackHelsinki,
     secondary: Typography.blackHelsinki,
     ascent: Typography.blackHelsinki,
@@ -55,8 +56,8 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
 
   //...Mountain View
   static const mountainView = GlyphPreset(
-    normal: Typography.blackMountainView,
-    alt: Typography.blackMountainView,
+    foreground: Typography.blackMountainView,
+    background: Typography.blackMountainView,
     primary: Typography.blackMountainView,
     secondary: Typography.blackMountainView,
     ascent: Typography.blackMountainView,
@@ -67,8 +68,8 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
 
   //...Cupertino
   static const cupertino = GlyphPreset(
-    normal: Typography.blackCupertino,
-    alt: Typography.blackCupertino,
+    foreground: Typography.blackCupertino,
+    background: Typography.blackCupertino,
     primary: Typography.blackCupertino,
     secondary: Typography.blackCupertino,
     ascent: Typography.blackCupertino,
@@ -78,19 +79,26 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   );
 
   //...Fields
-  final TextTheme primary, secondary, normal, alt;
-  final TextTheme ascent, success, error, warning;
+  final TextTheme background, foreground;
+  final TextTheme primary, secondary, ascent;
+  final TextTheme? _primary, _secondary, _ascent;
+  final TextTheme success, error, warning;
 
   const GlyphPreset({
+    required this.background,
+    required this.foreground,
     required this.primary,
     required this.secondary,
-    required this.normal,
-    required this.alt,
     required this.ascent,
+    TextTheme? onPrimary,
+    TextTheme? onSecondary,
+    TextTheme? onAscent,
     required this.success,
     required this.error,
     required this.warning,
-  });
+  })  : _primary = onPrimary,
+        _secondary = onSecondary,
+        _ascent = onAscent;
 
   /// Retrieve GlyphPreset instance form [context].
   /// If context has no instance of GlyphPreset in it,
@@ -119,11 +127,17 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   factory GlyphPreset.fromJson(Map<String, dynamic> data) {
     //...
     return GlyphPreset(
+      background: qTextTheme.decode(data['background']) ?? redmond.background,
+      foreground: qTextTheme.decode(data['foreground']) ?? redmond.foreground,
+      //...surface
       primary: qTextTheme.decode(data['primary']) ?? redmond.primary,
       secondary: qTextTheme.decode(data['secondary']) ?? redmond.secondary,
-      normal: qTextTheme.decode(data['normal']) ?? redmond.normal,
-      alt: qTextTheme.decode(data['alt']) ?? redmond.alt,
       ascent: qTextTheme.decode(data['ascent']) ?? redmond.ascent,
+      //...on surface
+      onPrimary: qTextTheme.decode(data['onPrimary']) ?? redmond._primary,
+      onSecondary: qTextTheme.decode(data['onSecondary']) ?? redmond._secondary,
+      onAscent: qTextTheme.decode(data['onAscent']) ?? redmond._ascent,
+      //...extras
       success: qTextTheme.decode(data['success']) ?? redmond.success,
       error: qTextTheme.decode(data['error']) ?? redmond.error,
       warning: qTextTheme.decode(data['warning']) ?? redmond.error,
@@ -131,6 +145,27 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   }
 
   //...Getters
+  TextTheme get onPrimary {
+    final primaryQ = primary.bodyMedium?.color?.isLight;
+    final foreQ = foreground.bodyMedium?.color?.isDark;
+    if (primaryQ == foreQ) return _primary ?? foreground;
+    return _primary ?? background;
+  }
+
+  TextTheme get onSecondary {
+    final secondaryQ = secondary.bodyMedium?.color?.isLight;
+    final foreQ = foreground.bodyMedium?.color?.isDark;
+    if (secondaryQ == foreQ) return _secondary ?? foreground;
+    return _secondary ?? background;
+  }
+
+  TextTheme get onAscent {
+    final ascentQ = ascent.bodyMedium?.color?.isLight;
+    final foreQ = foreground.bodyMedium?.color?.isDark;
+    if (ascentQ == foreQ) return _ascent ?? foreground;
+    return _ascent ?? background;
+  }
+
   TextTheme get primal {
     final hsv = HSVColor.fromColor(primary.bodySmall!.color!);
     final color = hsv.withSaturation(.4).withValue(.6).toColor();
@@ -141,7 +176,7 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   }
 
   TextTheme get subtle {
-    final hsv = HSVColor.fromColor(normal.bodySmall!.color!);
+    final hsv = HSVColor.fromColor(foreground.bodySmall!.color!);
     final color = hsv.withSaturation(.1).withValue(.6).toColor();
     return primary.apply(
       displayColor: color,
@@ -152,11 +187,17 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   //...Methods
   GlyphPreset apply({
     ColorPreset? palette,
+    TextStyle? background,
+    TextStyle? foreground,
+    //...surface
     TextStyle? primary,
     TextStyle? secondary,
-    TextStyle? normal,
-    TextStyle? alt,
     TextStyle? ascent,
+    //...on surface
+    TextStyle? onPrimary,
+    TextStyle? onSecondary,
+    TextStyle? onAscent,
+    //...extras
     TextStyle? success,
     TextStyle? error,
     TextStyle? warning,
@@ -182,11 +223,17 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
     }
 
     return GlyphPreset(
+      background: apply(this.background, merge(background, palette?.background)),
+      foreground: apply(this.foreground, merge(foreground, palette?.foreground)),
+      //...surface
       primary: apply(this.primary, merge(primary, palette?.primary)),
       secondary: apply(this.secondary, merge(secondary, palette?.secondary)),
-      normal: apply(this.normal, merge(normal, palette?.foreground)),
-      alt: apply(this.alt, merge(alt, palette?.background)),
       ascent: apply(this.ascent, merge(ascent, palette?.ascent)),
+      //...on surface
+      onPrimary: apply(_primary, merge(onPrimary, palette?.onPrimary)),
+      onSecondary: apply(_secondary, merge(onSecondary, palette?.onSecondary)),
+      onAscent: apply(_ascent, merge(onAscent, palette?.onAscent)),
+      //...extras
       success: apply(this.success, merge(success, palette?.success)),
       error: apply(this.error, merge(error, palette?.error)),
       warning: apply(this.warning, merge(warning, palette?.warning)),
@@ -197,11 +244,17 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   GlyphPreset merge(other) {
     //...
     return GlyphPreset(
+      background: background.merge(other?.background),
+      foreground: foreground.merge(other?.foreground),
+      //...surface
       primary: primary.merge(other?.primary),
       secondary: secondary.merge(other?.secondary),
-      normal: normal.merge(other?.normal),
-      alt: alt.merge(other?.alt),
       ascent: ascent.merge(other?.ascent),
+      //...on surface
+      onPrimary: _primary?.merge(other?._primary),
+      onSecondary: _secondary?.merge(other?._secondary),
+      onAscent: _ascent?.merge(other?._ascent),
+      //...extras
       success: success.merge(other?.success),
       error: error.merge(other?.error),
       warning: warning.merge(other?.warning),
@@ -211,11 +264,17 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   @override
   GlyphPreset copyWith({
     ColorPreset? palette,
+    TextTheme? background,
+    TextTheme? foreground,
+    //...surface
     TextTheme? primary,
     TextTheme? secondary,
-    TextTheme? normal,
-    TextTheme? alt,
     TextTheme? ascent,
+    //...on surface
+    TextTheme? onPrimary,
+    TextTheme? onSecondary,
+    TextTheme? onAscent,
+    //...extras
     TextTheme? success,
     TextTheme? error,
     TextTheme? warning,
@@ -230,11 +289,17 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
     }
 
     return GlyphPreset(
+      background: sudo(this.background, palette?.background, background),
+      foreground: sudo(this.foreground, palette?.foreground, foreground),
+      //...surface
       primary: sudo(this.primary, palette?.primary, primary),
       secondary: sudo(this.secondary, palette?.secondary, secondary),
-      normal: sudo(this.normal, palette?.foreground, normal),
-      alt: sudo(this.alt, palette?.background, alt),
       ascent: sudo(this.ascent, palette?.ascent, ascent),
+      //...on surface
+      onPrimary: sudo(this.onPrimary, palette?.onPrimary, onPrimary),
+      onSecondary: sudo(this.onSecondary, palette?.onSecondary, onSecondary),
+      onAscent: sudo(this.onAscent, palette?.onAscent, onAscent),
+      //...extras
       success: sudo(this.success, palette?.success, success),
       error: sudo(this.error, palette?.error, error),
       warning: sudo(this.warning, palette?.warning, warning),
@@ -246,11 +311,17 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
     //...
     if (other is! GlyphPreset) return this;
     return GlyphPreset(
+      background: TextTheme.lerp(background, other.background, t),
+      foreground: TextTheme.lerp(foreground, other.foreground, t),
+      //...on surface
       primary: TextTheme.lerp(primary, other.primary, t),
       secondary: TextTheme.lerp(secondary, other.secondary, t),
-      normal: TextTheme.lerp(normal, other.normal, t),
-      alt: TextTheme.lerp(alt, other.alt, t),
       ascent: TextTheme.lerp(ascent, other.ascent, t),
+      //...on surface
+      onPrimary: TextTheme.lerp(_primary, other._primary, t),
+      onSecondary: TextTheme.lerp(_secondary, other._secondary, t),
+      onAscent: TextTheme.lerp(_ascent, other._ascent, t),
+      //...extras
       success: TextTheme.lerp(success, other.success, t),
       error: TextTheme.lerp(error, other.error, t),
       warning: TextTheme.lerp(warning, other.warning, t),
@@ -260,28 +331,21 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   @override
   Map<String, dynamic> toJson() {
     return {
+      'background': qTextTheme.encode(background),
+      'foreground': qTextTheme.encode(foreground),
+      //...surface
       'primary': qTextTheme.encode(primary),
       'secondary': qTextTheme.encode(secondary),
-      'normal': qTextTheme.encode(normal),
-      'alt': qTextTheme.encode(alt),
       'ascent': qTextTheme.encode(ascent),
+      //...on surface
+      'onPrimary': qTextTheme.encode(onPrimary),
+      'onSecondary': qTextTheme.encode(onSecondary),
+      'onAscent': qTextTheme.encode(onAscent),
+      //...extras
       'success': qTextTheme.encode(success),
       'error': qTextTheme.encode(error),
       'warning': qTextTheme.encode(warning),
     };
-  }
-
-  List<TextTheme> toList() {
-    return [
-      normal,
-      alt,
-      primary,
-      secondary,
-      ascent,
-      success,
-      warning,
-      error,
-    ];
   }
 }
 

@@ -53,7 +53,7 @@ class PresetBuilder {
   /// ```
   Widget call(BuildContext context, Widget? child) {
     //...
-    impl(context) => const PresetImpl();
+    impl(context) => const PresetImplement();
     final preset = Preset(
       presets: presets,
       child: Builder(

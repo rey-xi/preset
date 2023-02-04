@@ -38,22 +38,31 @@ class ColorPreset extends PresetValue<ColorPreset> {
 
   //...Fields
   final Color background, foreground;
+  final MaterialColor? _swatch;
   final Color primary, secondary, ascent;
+  final Color? _primary, _secondary, _ascent;
   final Color success, error, warning;
   final Color shade, tint;
 
   const ColorPreset({
+    MaterialColor? swatch,
     required this.foreground,
     required this.background,
     required this.primary,
     required this.secondary,
     required this.ascent,
+    Color? onPrimary,
+    Color? onSecondary,
+    Color? onAscent,
     required this.success,
     required this.error,
     required this.warning,
     required this.tint,
     required this.shade,
-  });
+  })  : _swatch = swatch,
+        _primary = onPrimary,
+        _secondary = onSecondary,
+        _ascent = onAscent;
 
   /// Retrieve ColorPreset instance form [context].
   /// If context has no instance of ColorPreset in it,
@@ -79,11 +88,18 @@ class ColorPreset extends PresetValue<ColorPreset> {
   factory ColorPreset.fromJson(Map<String, dynamic> data) {
     //...
     return ColorPreset(
+      swatch: Colors.primaries.at(data['swatch']),
       foreground: qColor.decode(data['foreground']) ?? internal.foreground,
       background: qColor.decode(data['background']) ?? internal.background,
+      //...surface
       primary: qColor.decode(data['primary']) ?? internal.primary,
       secondary: qColor.decode(data['secondary']) ?? internal.secondary,
       ascent: qColor.decode(data['ascent']) ?? internal.ascent,
+      //...on surface
+      onPrimary: qColor.decode(data['onPrimary']),
+      onSecondary: qColor.decode(data['onSecondary']),
+      onAscent: qColor.decode(data['onAscent']),
+      //...extras
       success: qColor.decode(data['success']) ?? internal.success,
       error: qColor.decode(data['error']) ?? internal.error,
       warning: qColor.decode(data['warning']) ?? internal.warning,
@@ -94,7 +110,34 @@ class ColorPreset extends PresetValue<ColorPreset> {
 
   //...Getters
   MaterialColor get swatch {
-    return Colors.primaries.closestTo(primary);
+    return _swatch ?? Colors.primaries.closestTo(primary);
+  }
+
+  Color get onPrimary {
+    final primaryQ = primary.isLight;
+    final foreQ = foreground.isDark;
+    if (primaryQ == foreQ) {
+      return _primary ?? foreground;
+    }
+    return _primary ?? background;
+  }
+
+  Color get onSecondary {
+    final secondaryQ = secondary.isLight;
+    final foreQ = foreground.isDark;
+    if (secondaryQ == foreQ) {
+      return _secondary ?? foreground;
+    }
+    return _secondary ?? background;
+  }
+
+  Color get onAscent {
+    final ascentQ = ascent.isLight;
+    final foreQ = foreground.isDark;
+    if (ascentQ == foreQ) {
+      return _ascent ?? foreground;
+    }
+    return _ascent ?? background;
   }
 
   Color get primal {
@@ -110,25 +153,20 @@ class ColorPreset extends PresetValue<ColorPreset> {
   }
 
   //...Methods
-  Color primaryX(int alpha) => primary.withAlpha(alpha);
-
-  Color primalX(int alpha) => primal.withAlpha(alpha);
-
-  Color secondaryX(int alpha) => secondary.withAlpha(alpha);
-
-  Color foregroundX(int alpha) => foreground.withAlpha(alpha);
-
-  Color backgroundX(int alpha) => background.withAlpha(alpha);
-
-  Color ascentX(int alpha) => ascent.withAlpha(alpha);
-
   @override
   ColorPreset copyWith({
+    MaterialColor? swatch,
     Color? foreground,
     Color? background,
+    //...surface
     Color? primary,
     Color? secondary,
     Color? ascent,
+    //...on surface
+    Color? onPrimary,
+    Color? onSecondary,
+    Color? onAscent,
+    //...extras
     Color? success,
     Color? error,
     Color? warning,
@@ -137,11 +175,18 @@ class ColorPreset extends PresetValue<ColorPreset> {
   }) {
     //...
     return ColorPreset(
+      swatch: swatch ?? _swatch,
       foreground: foreground ?? this.foreground,
       background: background ?? this.background,
+      //...surface
       primary: primary ?? this.primary,
       secondary: secondary ?? this.secondary,
       ascent: ascent ?? this.ascent,
+      //...on surface
+      onPrimary: onPrimary ?? _primary,
+      onSecondary: onSecondary ?? _secondary,
+      onAscent: onAscent ?? _ascent,
+      //...extras
       success: success ?? this.success,
       error: error ?? this.error,
       warning: warning ?? this.warning,
@@ -154,11 +199,18 @@ class ColorPreset extends PresetValue<ColorPreset> {
   ColorPreset merge(other) {
     //...
     return ColorPreset(
+      swatch: other?._swatch ?? _swatch,
       foreground: other?.foreground ?? foreground,
       background: other?.background ?? background,
+      //...surface
       primary: other?.primary ?? primary,
       secondary: other?.secondary ?? secondary,
       ascent: other?.ascent ?? ascent,
+      //...on surface
+      onPrimary: other?._primary ?? _primary,
+      onSecondary: other?._secondary ?? _secondary,
+      onAscent: other?._ascent ?? _ascent,
+      //...extras
       success: other?.success ?? success,
       error: other?.error ?? error,
       warning: other?.warning ?? warning,
@@ -172,11 +224,18 @@ class ColorPreset extends PresetValue<ColorPreset> {
     //...
     if (other is! ColorPreset) return this;
     return ColorPreset(
+      swatch: t >= .5 ? other._swatch : _swatch,
       foreground: Color.lerp(foreground, other.foreground, t)!,
       background: Color.lerp(background, other.background, t)!,
+      //...surface
       primary: Color.lerp(primary, other.primary, t)!,
       secondary: Color.lerp(secondary, other.secondary, t)!,
       ascent: Color.lerp(ascent, other.ascent, t)!,
+      //...on surface
+      onPrimary: Color.lerp(_primary, other._primary, t)!,
+      onSecondary: Color.lerp(_secondary, other._secondary, t)!,
+      onAscent: Color.lerp(_ascent, other._ascent, t)!,
+      //...extras
       success: Color.lerp(success, other.success, t)!,
       error: Color.lerp(error, other.error, t)!,
       warning: Color.lerp(warning, other.warning, t)!,
@@ -188,32 +247,24 @@ class ColorPreset extends PresetValue<ColorPreset> {
   @override
   Map<String, dynamic> toJson() {
     return {
+      'swatch': Colors.primaries.indexOf(swatch),
       'foreground': qColor.encode(foreground),
       'background': qColor.encode(background),
+      //...surface
       'primary': qColor.encode(primary),
       'secondary': qColor.encode(secondary),
       'ascent': qColor.encode(ascent),
+      //...on surface
+      'onPrimary': qColor.encode(onPrimary),
+      'onSecondary': qColor.encode(onSecondary),
+      'onAscent': qColor.encode(onAscent),
+      //...extras
       'success': qColor.encode(success),
       'error': qColor.encode(error),
       'warning': qColor.encode(warning),
       'tint': qColor.encode(tint),
       'shade': qColor.encode(shade),
     };
-  }
-
-  List<Color> toList() {
-    return [
-      foreground,
-      background,
-      primary,
-      secondary,
-      ascent,
-      success,
-      warning,
-      error,
-      tint,
-      shade,
-    ];
   }
 }
 
