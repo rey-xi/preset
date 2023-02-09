@@ -187,6 +187,48 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
     return _ascent ?? onAscent;
   }
 
+  TextTheme get onSuccess {
+    final colors = [
+      foreground.bodySmall?.color ?? Colors.white,
+      background.bodySmall?.color ?? Colors.grey,
+    ];
+    const cc = Colors.white;
+    final color = success.bodySmall?.color ?? cc;
+    final onSuccess = success.apply(
+      displayColor: colors.farthestFrom(color),
+      bodyColor: colors.farthestFrom(color),
+    );
+    return onSuccess;
+  }
+
+  TextTheme get onError {
+    final colors = [
+      foreground.bodySmall?.color ?? Colors.white,
+      background.bodySmall?.color ?? Colors.grey,
+    ];
+    const cc = Colors.white;
+    final color = error.bodySmall?.color ?? cc;
+    final onError = error.apply(
+      displayColor: colors.farthestFrom(color),
+      bodyColor: colors.farthestFrom(color),
+    );
+    return onError;
+  }
+
+  TextTheme get onWarning {
+    final colors = [
+      foreground.bodySmall?.color ?? Colors.white,
+      background.bodySmall?.color ?? Colors.grey,
+    ];
+    const cc = Colors.white;
+    final color = warning.bodySmall?.color ?? cc;
+    final onWarning = warning.apply(
+      displayColor: colors.farthestFrom(color),
+      bodyColor: colors.farthestFrom(color),
+    );
+    return onWarning;
+  }
+
   TextTheme get primal {
     final hsv = HSVColor.fromColor(primary.bodySmall!.color!);
     final color = hsv.withSaturation(.4).withValue(.6).toColor();
@@ -196,6 +238,20 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
     );
   }
 
+  TextTheme get onPrimal {
+    final colors = [
+      foreground.bodySmall?.color ?? Colors.white,
+      background.bodySmall?.color ?? Colors.grey,
+    ];
+    const cc = Colors.white;
+    final color = primal.bodySmall?.color ?? cc;
+    final onPrimal = primal.apply(
+      displayColor: colors.farthestFrom(color),
+      bodyColor: colors.farthestFrom(color),
+    );
+    return onPrimal;
+  }
+
   TextTheme get subtle {
     final hsv = HSVColor.fromColor(foreground.bodySmall!.color!);
     final color = hsv.withSaturation(.1).withValue(.6).toColor();
@@ -203,6 +259,20 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
       displayColor: color,
       bodyColor: color,
     );
+  }
+
+  TextTheme get onSubtle {
+    final colors = [
+      foreground.bodySmall?.color ?? Colors.white,
+      background.bodySmall?.color ?? Colors.grey,
+    ];
+    const cc = Colors.white;
+    final color = subtle.bodySmall?.color ?? cc;
+    final onSubtle = subtle.apply(
+      displayColor: colors.farthestFrom(color),
+      bodyColor: colors.farthestFrom(color),
+    );
+    return onSubtle;
   }
 
   //...Methods
@@ -251,8 +321,8 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
       secondary: apply(this.secondary, merge(secondary, palette?.secondary)),
       ascent: apply(this.ascent, merge(ascent, palette?.ascent)),
       //...on surface
-      onPrimary: apply(_primary, merge(onPrimary, palette?.altPrimary)),
-      onSecondary: apply(_secondary, merge(onSecondary, palette?.altSecondary)),
+      onPrimary: apply(_primary, merge(onPrimary, palette?.onPrimary)),
+      onSecondary: apply(_secondary, merge(onSecondary, palette?.onSecondary)),
       onAscent: apply(_ascent, merge(onAscent, palette?.onAscent)),
       //...extras
       success: apply(this.success, merge(success, palette?.success)),
@@ -317,8 +387,8 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
       secondary: sudo(this.secondary, palette?.secondary, secondary),
       ascent: sudo(this.ascent, palette?.ascent, ascent),
       //...on surface
-      onPrimary: sudo(this.onPrimary, palette?.altPrimary, onPrimary),
-      onSecondary: sudo(this.onSecondary, palette?.altSecondary, onSecondary),
+      onPrimary: sudo(this.onPrimary, palette?.onPrimary, onPrimary),
+      onSecondary: sudo(this.onSecondary, palette?.onSecondary, onSecondary),
       onAscent: sudo(this.onAscent, palette?.onAscent, onAscent),
       //...extras
       success: sudo(this.success, palette?.success, success),

@@ -80,7 +80,7 @@ class PresetImplement extends StatelessWidget {
       scaffoldBackgroundColor: context.colors.background,
       primaryColor: context.colors.primary,
       canvasColor: context.colors.background,
-      cardColor: context.colors.background.addBrightness(.1),
+      cardColor: context.colors.background,
       highlightColor: context.colors.tint,
       splashColor: context.colors.tint,
       hoverColor: context.colors.shade.withAlpha(25),
@@ -88,6 +88,38 @@ class PresetImplement extends StatelessWidget {
       brightness: context.colors.background.isDark //
           ? Brightness.dark
           : Brightness.light,
+      cardTheme: CardTheme(
+        color: context.colors.background,
+        elevation: 16,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      dialogTheme: DialogTheme(
+        backgroundColor: context.colors.primary,
+        elevation: 24,
+        titleTextStyle: context.glyphs.onPrimary.titleMedium,
+        contentTextStyle: context.glyphs.onPrimary.bodyMedium,
+        iconColor: context.colors.onPrimary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      colorScheme: ColorScheme(
+        brightness: context.colors.background.isDark //
+            ? Brightness.dark
+            : Brightness.light,
+        primary: context.colors.primary,
+        onPrimary: context.colors.onPrimary,
+        secondary: context.colors.secondary,
+        onSecondary: context.colors.onSecondary,
+        error: context.colors.error,
+        onError: context.colors.onError,
+        background: context.colors.background,
+        onBackground: context.colors.foreground,
+        surface: context.colors.background,
+        onSurface: context.colors.foreground,
+      ),
       timePickerTheme: TimePickerThemeData(
         backgroundColor: context.colors.background.addSaturation(-.1),
         inputDecorationTheme: const InputDecorationTheme(),
@@ -95,7 +127,7 @@ class PresetImplement extends StatelessWidget {
       appBarTheme: AppBarTheme(
         color: context.colors.primary,
         shadowColor: context.colors.shade,
-        foregroundColor: context.colors.altPrimary,
+        foregroundColor: context.colors.onPrimary,
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: context.colors.primary,
           systemNavigationBarColor: context.colors.primary,
@@ -117,7 +149,7 @@ class PresetImplement extends StatelessWidget {
         size: 24,
       ),
       primaryIconTheme: IconThemeData(
-        color: context.colors.altPrimary,
+        color: context.colors.onPrimary,
       ),
       buttonTheme: ButtonThemeData(
         textTheme: ButtonTextTheme.primary,

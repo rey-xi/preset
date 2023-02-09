@@ -113,12 +113,12 @@ class ColorPreset extends PresetValue<ColorPreset> {
     return _swatch ?? Colors.primaries.closestTo(primary);
   }
 
-  Color get altPrimary {
+  Color get onPrimary {
     final colors = [foreground, background];
     return _primary ?? colors.farthestFrom(primary);
   }
 
-  Color get altSecondary {
+  Color get onSecondary {
     final colors = [foreground, background];
     return _secondary ?? colors.farthestFrom(secondary);
   }
@@ -128,16 +128,41 @@ class ColorPreset extends PresetValue<ColorPreset> {
     return _ascent ?? colors.farthestFrom(ascent);
   }
 
+  Color get onSuccess {
+    final colors = [foreground, background];
+    return colors.farthestFrom(success);
+  }
+
+  Color get onError {
+    final colors = [foreground, background];
+    return colors.farthestFrom(error);
+  }
+
+  Color get onWarning {
+    final colors = [foreground, background];
+    return colors.farthestFrom(warning);
+  }
+
   Color get primal {
     var hsv = HSVColor.fromColor(primary);
     hsv = hsv.withSaturation(.4).withValue(.6);
     return hsv.toColor();
   }
 
+  Color get onPrimal {
+    final colors = [foreground, background];
+    return _primary ?? colors.farthestFrom(primal);
+  }
+
   Color get subtle {
     var hsv = HSVColor.fromColor(foreground);
     hsv = hsv.withSaturation(.1).withValue(.6);
     return hsv.toColor();
+  }
+
+  Color get onSubtle {
+    final colors = [foreground, background];
+    return colors.farthestFrom(subtle);
   }
 
   //...Methods
@@ -243,8 +268,8 @@ class ColorPreset extends PresetValue<ColorPreset> {
       'secondary': qColor.encode(secondary),
       'ascent': qColor.encode(ascent),
       //...on surface
-      'onPrimary': qColor.encode(altPrimary),
-      'onSecondary': qColor.encode(altSecondary),
+      'onPrimary': qColor.encode(onPrimary),
+      'onSecondary': qColor.encode(onSecondary),
       'onAscent': qColor.encode(onAscent),
       //...extras
       'success': qColor.encode(success),
