@@ -1,5 +1,5 @@
 name: preset
-version: 0.0.1+4
+version: 0.0.1+5
 description: Advanced theme management system with string codec.
 homepage: https://github.com/rey-xi/preset/tree/master
 repository: https://github.com/rey-xi/preset
@@ -13,8 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  qp_xt: ^0.0.1+4
-
+  qp_xt_flutter: ^0.0.2+3
 
 dev_dependencies:
   flutter_test:

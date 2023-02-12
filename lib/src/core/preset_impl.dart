@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:preset/preset.dart';
-import 'package:qp_xt/qp_xt.dart';
+import 'package:qp_xt_flutter/qp_xt.dart';
 
 /// ## Preset Implement
 /// Preset values implementor class. A typical consumer
