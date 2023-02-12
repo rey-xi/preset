@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:preset/preset.dart';
-import 'package:qp_xt/qp_xt.dart';
+import 'package:qp_xt_flutter/qp_xt.dart';
 
 import '../core/preset_value.dart';
 
@@ -88,7 +88,7 @@ class ColorPreset extends PresetValue<ColorPreset> {
   factory ColorPreset.fromJson(Map<String, dynamic> data) {
     //...
     return ColorPreset(
-      swatch: Colors.primaries.at(data['swatch']),
+      swatch: Colors.primaries.elementAtOrNull(data['swatch']),
       foreground: qColor.decode(data['foreground']) ?? internal.foreground,
       background: qColor.decode(data['background']) ?? internal.background,
       //...surface
