@@ -179,8 +179,8 @@ class PresetImplement extends StatelessWidget {
             if (disabled) return context.colors.subtle;
             if (error) return context.colors.error;
             return pressed //
-                ? context.colors.primal
-                : context.colors.primary;
+                ? context.colors.ascent
+                : context.colors.onPrimary;
           }),
           foregroundColor: MaterialStateColor.resolveWith((states) {
             final pressed = states.contains(MaterialState.pressed);
@@ -189,7 +189,7 @@ class PresetImplement extends StatelessWidget {
             if (disabled) return context.colors.onSubtle;
             if (error) return context.colors.onError;
             return pressed //
-                ? context.colors.onPrimal
+                ? context.colors.onAscent
                 : context.colors.onPrimary;
           }),
           shape: MaterialStateProperty.resolveWith((states) {
@@ -202,10 +202,7 @@ class PresetImplement extends StatelessWidget {
             return pressed ? 4 : 2;
           }),
           shadowColor: MaterialStateColor.resolveWith((states) {
-            final pressed = states.contains(MaterialState.pressed);
-            return pressed //
-                ? context.colors.shade
-                : context.colors.subtle;
+            return context.colors.shade;
           }),
         ),
       ),
