@@ -175,26 +175,22 @@ class PresetImplement extends StatelessWidget {
           backgroundColor: MaterialStateColor.resolveWith((states) {
             final pressed = states.contains(MaterialState.pressed);
             final disabled = states.contains(MaterialState.disabled);
-            final selected = states.contains(MaterialState.selected);
             final error = states.contains(MaterialState.error);
             if (disabled) return context.colors.subtle;
-            if (selected) return context.colors.primal;
             if (error) return context.colors.error;
             return pressed //
-                ? context.colors.primary
-                : context.colors.primal;
+                ? context.colors.primal
+                : context.colors.primary;
           }),
           foregroundColor: MaterialStateColor.resolveWith((states) {
             final pressed = states.contains(MaterialState.pressed);
             final disabled = states.contains(MaterialState.disabled);
-            final selected = states.contains(MaterialState.selected);
             final error = states.contains(MaterialState.error);
             if (disabled) return context.colors.onSubtle;
-            if (selected) return context.colors.onPrimal;
             if (error) return context.colors.onError;
             return pressed //
-                ? context.colors.onPrimary
-                : context.colors.onPrimal;
+                ? context.colors.onPrimal
+                : context.colors.onPrimary;
           }),
           shape: MaterialStateProperty.resolveWith((states) {
             return RoundedRectangleBorder(
