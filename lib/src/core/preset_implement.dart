@@ -89,15 +89,15 @@ class PresetImplement extends StatelessWidget {
           ? Brightness.dark
           : Brightness.light,
       cardTheme: CardTheme(
-        color: context.colors.background,
         elevation: 16,
+        color: context.colors.background,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
       dialogTheme: DialogTheme(
-        backgroundColor: context.colors.primary,
         elevation: 24,
+        backgroundColor: context.colors.primary,
         titleTextStyle: context.glyphs.onPrimary.titleMedium,
         contentTextStyle: context.glyphs.onPrimary.bodyMedium,
         iconColor: context.colors.onPrimary,
@@ -174,18 +174,31 @@ class PresetImplement extends StatelessWidget {
           splashFactory: InkSplash.splashFactory,
           backgroundColor: MaterialStateColor.resolveWith((states) {
             final pressed = states.contains(MaterialState.pressed);
-            return pressed
-                ? context.colors.primal.withAlpha(180)
-                : context.colors.primal.withAlpha(150);
+            final disabled = states.contains(MaterialState.disabled);
+            final selected = states.contains(MaterialState.selected);
+            final error = states.contains(MaterialState.error);
+            if (disabled) return context.colors.subtle;
+            if (selected) return context.colors.primal;
+            if (error) return context.colors.error;
+            return pressed //
+                ? context.colors.primary
+                : context.colors.primal;
           }),
           foregroundColor: MaterialStateColor.resolveWith((states) {
             final pressed = states.contains(MaterialState.pressed);
-            return pressed ? context.colors.ascent : context.colors.background;
+            final disabled = states.contains(MaterialState.disabled);
+            final selected = states.contains(MaterialState.selected);
+            final error = states.contains(MaterialState.error);
+            if (disabled) return context.colors.onSubtle;
+            if (selected) return context.colors.onPrimal;
+            if (error) return context.colors.onError;
+            return pressed //
+                ? context.colors.onPrimary
+                : context.colors.onPrimal;
           }),
           shape: MaterialStateProperty.resolveWith((states) {
-            final pressed = states.contains(MaterialState.pressed);
             return RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(pressed ? 16 : 8),
+              borderRadius: BorderRadius.circular(16),
             );
           }),
           elevation: MaterialStateProperty.resolveWith((states) {
@@ -194,20 +207,24 @@ class PresetImplement extends StatelessWidget {
           }),
           shadowColor: MaterialStateColor.resolveWith((states) {
             final pressed = states.contains(MaterialState.pressed);
-            return pressed ? context.colors.primary : context.colors.subtle;
+            return pressed //
+                ? context.colors.shade
+                : context.colors.subtle;
           }),
         ),
       ),
       checkboxTheme: CheckboxThemeData(
         checkColor: MaterialStateColor.resolveWith((states) {
           final selected = states.contains(MaterialState.selected);
-          return selected ? context.colors.background : context.colors.primary;
+          return selected //
+              ? context.colors.onPrimal
+              : context.colors.onSubtle;
         }),
         fillColor: MaterialStateColor.resolveWith((states) {
           final selected = states.contains(MaterialState.selected);
-          return selected
-              ? context.colors.primary.withAlpha(245)
-              : context.colors.primary.withAlpha(100);
+          return selected //
+              ? context.colors.primary
+              : context.colors.subtle;
         }),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -234,7 +251,9 @@ class PresetImplement extends StatelessWidget {
         }),
         suffixIconColor: MaterialStateColor.resolveWith((states) {
           final focused = states.contains(MaterialState.focused);
-          return focused ? context.colors.primal : context.colors.primary;
+          return focused //
+              ? context.colors.primal
+              : context.colors.primary;
         }),
         floatingLabelStyle: MaterialStateTextStyle.resolveWith((states) {
           final focused = states.contains(MaterialState.focused);
