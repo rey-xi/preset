@@ -106,7 +106,7 @@ class PresetAdapter extends StatelessWidget {
         ),
       ),
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: context.colors.primary,
+        backgroundColor: context.colors.primary.withAlpha(200),
         contentTextStyle: context.glyphs.onPrimary.bodyMedium,
         closeIconColor: context.colors.onPrimary,
         actionTextColor: context.colors.onPrimary,
