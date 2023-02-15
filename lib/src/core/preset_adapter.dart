@@ -5,7 +5,7 @@ import 'package:qp_xt_flutter/qp_xt.dart';
 
 /// ## Preset Implement
 /// Preset values implementor class. A typical consumer
-/// class for preset values. Basically, [PresetImplement]
+/// class for preset values. Basically, [PresetAdapter]
 /// help to implement the preset values in [MaterialApp],
 /// [MaterialApp.theme] and [ThemeData.extensions]
 /// ```dart
@@ -15,7 +15,7 @@ import 'package:qp_xt_flutter/qp_xt.dart';
 ///    child: child,
 /// );
 /// ```
-class PresetImplement extends StatelessWidget {
+class PresetAdapter extends StatelessWidget {
   //...Fields
   /// Consumer theme that defines how this impl will
   /// implement preset values into the conventional
@@ -30,7 +30,7 @@ class PresetImplement extends StatelessWidget {
   /// affected by this Impl implementation.
   final Widget? child;
 
-  const PresetImplement({
+  const PresetAdapter({
     super.key,
     this.updateTheme,
     this.extensions = const {},
@@ -38,12 +38,12 @@ class PresetImplement extends StatelessWidget {
   });
 
   //...Methods
-  PresetImplement copyWith({
+  PresetAdapter copyWith({
     Widget? child,
     ThemeData Function(ThemeData theme)? updateTheme,
     Set<ThemeExtension>? extensions,
   }) {
-    return PresetImplement(
+    return PresetAdapter(
       updateTheme: updateTheme ?? this.updateTheme,
       extensions: extensions ?? this.extensions,
       child: child ?? this.child,
@@ -104,6 +104,16 @@ class PresetImplement extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: context.colors.background,
+        contentTextStyle: context.glyphs.foreground.bodyMedium,
+        behavior: SnackBarBehavior.fixed,
+        actionTextColor: context.colors.onPrimary,
+        closeIconColor: context.colors.onPrimary,
+        disabledActionTextColor: context.colors.onPrimal.withAlpha(100),
+        showCloseIcon: true,
+        elevation: 16.0,
       ),
       colorScheme: ColorScheme(
         brightness: context.colors.background.isDark //
@@ -328,4 +338,4 @@ class PresetImplement extends StatelessWidget {
   }
 }
 
-typedef PresetImplementation = PresetImplement Function(BuildContext context);
+typedef PresetAdoption = PresetAdapter Function(BuildContext context);

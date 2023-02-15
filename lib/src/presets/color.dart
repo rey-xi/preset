@@ -283,5 +283,6 @@ class ColorPreset extends PresetValue<ColorPreset> {
 
 extension ContextColorPreset on BuildContext {
   //...Getters
+  /// Shortcut to load Color preset from context
   ColorPreset get colors => ColorPreset.of(this);
 }

@@ -81,3 +81,12 @@ abstract class PresetValue<T extends PresetValue<T>> extends ThemeExtension<T> {
     return '$T(${json.encode(toJson())})';
   }
 }
+
+extension ContextValuePreset on BuildContext {
+  //...
+  /// Shortcut to load Theme data from context
+  ThemeData get theme => Theme.of(this);
+
+  /// Shortcut to load MediaQuery data from context
+  MediaQueryData get data => MediaQuery.of(this);
+}

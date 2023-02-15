@@ -24,13 +24,13 @@ class PresetBuilder {
   /// Set of default preset values this builder will
   /// pass down to its children via context.. Defined
   /// preset values serve as fallback during used by
-  /// [implementation].
+  /// [adoption].
   final Set<PresetValue> presets;
 
   /// Implement preset values into the conventional
   /// material theme data. The default implementation
   /// is used if this argument is omitted.
-  final PresetImplementation? implementation;
+  final PresetAdoption? adoption;
 
   /// Works exactly as [MaterialApp.builder]. You can
   /// implement preset values manually from here as
@@ -40,7 +40,7 @@ class PresetBuilder {
 
   const PresetBuilder({
     this.presets = const {},
-    this.implementation,
+    this.adoption,
     this.builder,
   });
 
@@ -53,12 +53,12 @@ class PresetBuilder {
   /// ```
   Widget call(BuildContext context, Widget? child) {
     //...
-    impl(context) => const PresetImplement();
+    impl(context) => const PresetAdapter();
     final preset = Preset(
       presets: presets,
       child: Builder(
         builder: (context) {
-          final implementation = this.implementation ?? impl;
+          final implementation = this.adoption ?? impl;
           return implementation(context).copyWith(child: child);
         },
       ),

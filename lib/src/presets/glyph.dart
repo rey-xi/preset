@@ -442,5 +442,6 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
 
 extension ContextGlyphPreset on BuildContext {
   //...Getters
+  /// Shortcut to load Glyph preset from context
   GlyphPreset get glyphs => GlyphPreset.of(this);
 }

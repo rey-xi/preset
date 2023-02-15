@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:preset/preset.dart';
 
+import 'preset_builder.dart';
+
 /// ## Preset App
 /// The most basic way to implement the preset library
 /// in your app. PresetApp is a direct subclass of the
@@ -31,7 +33,7 @@ class PresetApp extends MaterialApp {
   /// Implement preset values into the conventional
   /// material theme data. The default implementation
   /// is used if this argument is omitted.
-  final PresetImplementation? implementation;
+  final PresetAdoption? adoption;
 
   PresetApp({
     super.key,
@@ -61,7 +63,7 @@ class PresetApp extends MaterialApp {
     super.scrollBehavior = const CupertinoScrollBehavior(),
     super.useInheritedMediaQuery = false,
     this.presets = const {},
-    this.implementation,
+    this.adoption,
 
     /// Works exactly as [MaterialApp.builder]. You can
     /// implement preset values manually from here as
@@ -72,7 +74,7 @@ class PresetApp extends MaterialApp {
           builder: PresetBuilder(
             presets: presets,
             builder: builder, // extra
-            implementation: implementation,
+            adoption: adoption,
           ),
         );
 }
