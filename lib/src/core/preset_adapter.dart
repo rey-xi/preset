@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:preset/preset.dart';
-import 'package:qp_xt_flutter/qp_xt.dart';
+import 'package:qp_xt/qp_xt.dart';
 
-/// ## Preset Implement
+/// ## Preset Adapter
 /// Preset values implementor class. A typical consumer
 /// class for preset values. Basically, [PresetAdapter]
 /// help to implement the preset values in [MaterialApp],
 /// [MaterialApp.theme] and [ThemeData.extensions]
+///
 /// ```dart
 /// PresetImpl(
 ///    theme: theme,
@@ -74,108 +75,108 @@ class PresetAdapter extends StatelessWidget {
   static ThemeData themeOf(BuildContext context) {
     //...
     return ThemeData(
-      primarySwatch: context.colors.swatch,
-      textTheme: context.glyphs.foreground,
-      primaryTextTheme: context.glyphs.onPrimary,
-      scaffoldBackgroundColor: context.colors.background,
-      primaryColor: context.colors.primary,
-      canvasColor: context.colors.background,
-      cardColor: context.colors.background,
-      highlightColor: context.colors.tint,
-      splashColor: context.colors.tint,
-      hoverColor: context.colors.shade.withAlpha(25),
-      focusColor: context.colors.shade,
-      brightness: context.colors.background.isDark //
+      primarySwatch: context.spectra.swatch,
+      textTheme: context.typeface.foreground,
+      primaryTextTheme: context.typeface.onPrimary,
+      scaffoldBackgroundColor: context.spectra.background,
+      primaryColor: context.spectra.primary,
+      canvasColor: context.spectra.background,
+      cardColor: context.spectra.background,
+      highlightColor: context.spectra.tint,
+      splashColor: context.spectra.tint,
+      hoverColor: context.spectra.shade.withAlpha(25),
+      focusColor: context.spectra.shade,
+      brightness: context.spectra.background.isDark //
           ? Brightness.dark
           : Brightness.light,
       cardTheme: CardTheme(
         elevation: 16,
-        color: context.colors.background,
+        color: context.spectra.background,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
       dialogTheme: DialogTheme(
         elevation: 24,
-        backgroundColor: context.colors.primary,
-        titleTextStyle: context.glyphs.onPrimary.titleMedium,
-        contentTextStyle: context.glyphs.onPrimary.bodyMedium,
-        iconColor: context.colors.onPrimary,
+        backgroundColor: context.spectra.primary,
+        titleTextStyle: context.typeface.onPrimary.titleMedium,
+        contentTextStyle: context.typeface.onPrimary.bodyMedium,
+        iconColor: context.spectra.onPrimary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: context.colors.primary.withAlpha(200),
-        contentTextStyle: context.glyphs.onPrimary.bodyMedium,
-        closeIconColor: context.colors.onPrimary,
-        actionTextColor: context.colors.onPrimary,
-        disabledActionTextColor: context.colors.onPrimal.withAlpha(100),
+        backgroundColor: context.spectra.primary.withAlpha(200),
+        contentTextStyle: context.typeface.onPrimary.bodyMedium,
+        closeIconColor: context.spectra.onPrimary,
+        actionTextColor: context.spectra.onPrimary,
+        disabledActionTextColor: context.spectra.onPrimal.withAlpha(100),
         behavior: SnackBarBehavior.fixed,
         showCloseIcon: true,
         elevation: 16.0,
       ),
       colorScheme: ColorScheme(
-        brightness: context.colors.background.isDark //
+        brightness: context.spectra.background.isDark //
             ? Brightness.dark
             : Brightness.light,
-        primary: context.colors.primary,
-        onPrimary: context.colors.onPrimary,
-        secondary: context.colors.secondary,
-        onSecondary: context.colors.onSecondary,
-        error: context.colors.error,
-        onError: context.colors.onError,
-        background: context.colors.background,
-        onBackground: context.colors.foreground,
-        surface: context.colors.background,
-        onSurface: context.colors.foreground,
+        primary: context.spectra.primary,
+        onPrimary: context.spectra.onPrimary,
+        secondary: context.spectra.secondary,
+        onSecondary: context.spectra.onSecondary,
+        error: context.spectra.error,
+        onError: context.spectra.onError,
+        background: context.spectra.background,
+        onBackground: context.spectra.foreground,
+        surface: context.spectra.background,
+        onSurface: context.spectra.foreground,
       ),
       timePickerTheme: TimePickerThemeData(
-        backgroundColor: context.colors.background.addSaturation(-.1),
+        backgroundColor: context.spectra.background.addSaturation(-.1),
         inputDecorationTheme: const InputDecorationTheme(),
       ),
       appBarTheme: AppBarTheme(
-        color: context.colors.primary,
-        shadowColor: context.colors.shade,
-        foregroundColor: context.colors.onPrimary,
+        color: context.spectra.primary,
+        shadowColor: context.spectra.shade,
+        foregroundColor: context.spectra.onPrimary,
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: context.colors.primary,
-          systemNavigationBarColor: context.colors.primary,
+          statusBarColor: context.spectra.primary,
+          systemNavigationBarColor: context.spectra.primary,
         ),
       ),
       drawerTheme: DrawerThemeData(
-        backgroundColor: context.colors.background,
-        scrimColor: context.colors.shade,
+        backgroundColor: context.spectra.background,
+        scrimColor: context.spectra.shade,
       ),
       dividerTheme: DividerThemeData(
-        color: context.colors.foreground.withAlpha(50),
+        color: context.spectra.foreground.withAlpha(50),
         thickness: .2,
         endIndent: 8,
         indent: 8,
         space: 8,
       ),
       iconTheme: IconThemeData(
-        color: context.colors.foreground,
+        color: context.spectra.foreground,
         size: 24,
       ),
       primaryIconTheme: IconThemeData(
-        color: context.colors.onPrimary,
+        color: context.spectra.onPrimary,
       ),
       buttonTheme: ButtonThemeData(
         textTheme: ButtonTextTheme.primary,
-        buttonColor: context.colors.primary,
+        buttonColor: context.spectra.primary,
         minWidth: 24,
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: context.colors.ascent,
-        foregroundColor: context.colors.onAscent,
+        backgroundColor: context.spectra.ascent,
+        foregroundColor: context.spectra.onAscent,
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           splashFactory: InkSplash.splashFactory,
           foregroundColor: MaterialStateColor.resolveWith((states) {
             final pressed = states.contains(MaterialState.pressed);
-            return pressed ? context.colors.primal : context.colors.primary;
+            return pressed ? context.spectra.primal : context.spectra.primary;
           }),
         ),
       ),
@@ -186,21 +187,21 @@ class PresetAdapter extends StatelessWidget {
             final pressed = states.contains(MaterialState.pressed);
             final disabled = states.contains(MaterialState.disabled);
             final error = states.contains(MaterialState.error);
-            if (disabled) return context.colors.subtle;
-            if (error) return context.colors.error;
+            if (disabled) return context.spectra.subtle;
+            if (error) return context.spectra.error;
             return pressed //
-                ? context.colors.primary
-                : context.colors.ascent;
+                ? context.spectra.primary
+                : context.spectra.ascent;
           }),
           foregroundColor: MaterialStateColor.resolveWith((states) {
             final pressed = states.contains(MaterialState.pressed);
             final disabled = states.contains(MaterialState.disabled);
             final error = states.contains(MaterialState.error);
-            if (disabled) return context.colors.onSubtle;
-            if (error) return context.colors.onError;
+            if (disabled) return context.spectra.onSubtle;
+            if (error) return context.spectra.onError;
             return pressed //
-                ? context.colors.onPrimary
-                : context.colors.onAscent;
+                ? context.spectra.onPrimary
+                : context.spectra.onAscent;
           }),
           shape: MaterialStateProperty.resolveWith((states) {
             return RoundedRectangleBorder(
@@ -212,7 +213,7 @@ class PresetAdapter extends StatelessWidget {
             return pressed ? 4 : 2;
           }),
           shadowColor: MaterialStateColor.resolveWith((states) {
-            return context.colors.shade;
+            return context.spectra.shade;
           }),
         ),
       ),
@@ -220,14 +221,14 @@ class PresetAdapter extends StatelessWidget {
         checkColor: MaterialStateColor.resolveWith((states) {
           final selected = states.contains(MaterialState.selected);
           return selected //
-              ? context.colors.onPrimal
-              : context.colors.onSubtle;
+              ? context.spectra.onPrimal
+              : context.spectra.onSubtle;
         }),
         fillColor: MaterialStateColor.resolveWith((states) {
           final selected = states.contains(MaterialState.selected);
           return selected //
-              ? context.colors.primary
-              : context.colors.subtle;
+              ? context.spectra.primary
+              : context.spectra.subtle;
         }),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -235,71 +236,71 @@ class PresetAdapter extends StatelessWidget {
       ),
       inputDecorationTheme: InputDecorationTheme(
         isDense: false,
-        hintStyle: context.glyphs.subtle.bodyMedium,
+        hintStyle: context.typeface.subtle.bodyMedium,
         helperStyle: MaterialStateTextStyle.resolveWith((states) {
           final focused = states.contains(MaterialState.focused);
           if (focused) {
-            return context.glyphs.primal.bodySmall!;
+            return context.typeface.primal.bodySmall!;
           } else {
-            return context.glyphs.primary.bodySmall!;
+            return context.typeface.primary.bodySmall!;
           }
         }),
-        counterStyle: context.glyphs.primary.bodySmall,
-        errorStyle: context.glyphs.error.bodySmall,
-        prefixStyle: context.glyphs.foreground.bodyMedium,
-        suffixStyle: context.glyphs.foreground.bodyMedium,
+        counterStyle: context.typeface.primary.bodySmall,
+        errorStyle: context.typeface.error.bodySmall,
+        prefixStyle: context.typeface.foreground.bodyMedium,
+        suffixStyle: context.typeface.foreground.bodyMedium,
         prefixIconColor: MaterialStateColor.resolveWith((states) {
           final focused = states.contains(MaterialState.focused);
-          return focused ? context.colors.primal : context.colors.primary;
+          return focused ? context.spectra.primal : context.spectra.primary;
         }),
         suffixIconColor: MaterialStateColor.resolveWith((states) {
           final focused = states.contains(MaterialState.focused);
           return focused //
-              ? context.colors.primal
-              : context.colors.primary;
+              ? context.spectra.primal
+              : context.spectra.primary;
         }),
         floatingLabelStyle: MaterialStateTextStyle.resolveWith((states) {
           final focused = states.contains(MaterialState.focused);
           if (focused) {
-            return context.glyphs.primal.bodyMedium!;
+            return context.typeface.primal.bodyMedium!;
           } else {
-            return context.glyphs.primary.bodyMedium!;
+            return context.typeface.primary.bodyMedium!;
           }
         }),
         labelStyle: MaterialStateTextStyle.resolveWith((states) {
           final focused = states.contains(MaterialState.focused);
           if (focused) {
-            return context.glyphs.primal.bodyMedium!;
+            return context.typeface.primal.bodyMedium!;
           } else {
-            return context.glyphs.primary.bodyMedium!;
+            return context.typeface.primary.bodyMedium!;
           }
         }),
         enabledBorder: UnderlineInputBorder(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(4.0)),
-          borderSide: BorderSide(width: .5, color: context.colors.primary),
+          borderSide: BorderSide(width: .5, color: context.spectra.primary),
         ),
         focusedBorder: UnderlineInputBorder(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(4.0)),
-          borderSide: BorderSide(width: 1.8, color: context.colors.primal),
+          borderSide: BorderSide(width: 1.8, color: context.spectra.primal),
         ),
         errorBorder: UnderlineInputBorder(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(4.0)),
-          borderSide: BorderSide(width: .5, color: context.colors.error),
+          borderSide: BorderSide(width: .5, color: context.spectra.error),
         ),
         focusedErrorBorder: UnderlineInputBorder(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(4.0)),
-          borderSide: BorderSide(width: 1.5, color: context.colors.error),
+          borderSide: BorderSide(width: 1.5, color: context.spectra.error),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
       ),
       bannerTheme: MaterialBannerThemeData(
-        backgroundColor: context.colors.background.addBrightness(.1),
-        contentTextStyle: context.glyphs.foreground.bodySmall,
+        backgroundColor: context.spectra.background.addBrightness(.1),
+        contentTextStyle: context.typeface.foreground.bodySmall,
         elevation: 6,
       ),
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: context.colors.background.addBrightness(.1),
-        modalBackgroundColor: context.colors.background,
+        backgroundColor: context.spectra.background.addBrightness(.1),
+        modalBackgroundColor: context.spectra.background,
         modalElevation: 8,
         elevation: 4,
       ),
@@ -316,20 +317,20 @@ class PresetAdapter extends StatelessWidget {
         thumbColor: MaterialStateProperty.resolveWith((states) {
           final dragged = states.contains(MaterialState.dragged);
           final hovered = states.contains(MaterialState.hovered);
-          if (dragged) return context.colors.ascent;
-          if (hovered) return context.colors.ascent;
-          return context.colors.ascent.withAlpha(150);
+          if (dragged) return context.spectra.ascent;
+          if (hovered) return context.spectra.ascent;
+          return context.spectra.ascent.withAlpha(150);
         }),
         trackColor: MaterialStateProperty.resolveWith((states) {
           final hovered = states.contains(MaterialState.hovered);
-          if (hovered) return context.colors.foreground;
-          return context.colors.foreground.withAlpha(25);
+          if (hovered) return context.spectra.foreground;
+          return context.spectra.foreground.withAlpha(25);
         }),
         trackBorderColor: MaterialStateProperty.resolveWith((states) {
           if (states.contains(MaterialState.hovered)) {
-            return context.colors.ascent.withAlpha(150);
+            return context.spectra.ascent.withAlpha(150);
           }
-          return context.colors.ascent.withAlpha(10);
+          return context.spectra.ascent.withAlpha(10);
         }),
         thumbVisibility: MaterialStateProperty.all(true),
         trackVisibility: MaterialStateProperty.all(true),

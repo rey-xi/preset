@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:preset/preset.dart';
-import 'package:qp_xt_flutter/qp_xt.dart';
+import 'package:qp_xt/qp_xt.dart';
 
-/// ## Glyph Preset
+/// ## Typeface
 /// [Typography] implementation of [PresetValue].
 /// ```dart
-/// GlyphPreset(
+/// Typeface(
 ///   alt: Typography.blackRedmond,
 ///   normal: Typography.blackRedmond,
 ///   primary: Typography.blackRedmond,
@@ -16,9 +16,9 @@ import 'package:qp_xt_flutter/qp_xt.dart';
 ///   warning: Typography.blackRedmond,
 /// );
 /// ```
-class GlyphPreset extends PresetValue<GlyphPreset> {
+class Typeface extends PresetValue<Typeface> {
   //...constants
-  static const redmond = GlyphPreset(
+  static const redmond = Typeface(
     //...Redmond
     foreground: Typography.blackRedmond,
     background: Typography.blackRedmond,
@@ -31,7 +31,7 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   );
 
   //...Redwood City
-  static const redwoodCity = GlyphPreset(
+  static const redwoodCity = Typeface(
     foreground: Typography.blackRedwoodCity,
     background: Typography.blackRedwoodCity,
     primary: Typography.blackRedwoodCity,
@@ -43,7 +43,7 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   );
 
   //...Helsinki
-  static const helsinki = GlyphPreset(
+  static const helsinki = Typeface(
     foreground: Typography.blackHelsinki,
     background: Typography.blackHelsinki,
     primary: Typography.blackHelsinki,
@@ -55,7 +55,7 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   );
 
   //...Mountain View
-  static const mountainView = GlyphPreset(
+  static const mountainView = Typeface(
     foreground: Typography.blackMountainView,
     background: Typography.blackMountainView,
     primary: Typography.blackMountainView,
@@ -67,7 +67,7 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   );
 
   //...Cupertino
-  static const cupertino = GlyphPreset(
+  static const cupertino = Typeface(
     foreground: Typography.blackCupertino,
     background: Typography.blackCupertino,
     primary: Typography.blackCupertino,
@@ -84,7 +84,7 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   final TextTheme? _primary, _secondary, _ascent;
   final TextTheme success, error, warning;
 
-  const GlyphPreset({
+  const Typeface({
     required this.background,
     required this.foreground,
     required this.primary,
@@ -100,33 +100,41 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
         _secondary = onSecondary,
         _ascent = onAscent;
 
-  /// Retrieve GlyphPreset instance form [context].
-  /// If context has no instance of GlyphPreset in it,
-  /// [GlyphPreset.redmond] is returned.
-  factory GlyphPreset.of(BuildContext context) {
+  /// Retrieve Typeface instance form [context]. If context
+  /// has no instance of Typeface in it, [Typeface.redmond]
+  /// is returned.
+  ///
+  /// ```dart
+  /// const typeface = Typeface.of(context)
+  /// ```
+  factory Typeface.of(BuildContext context) {
     //...
-    final thx = Theme.of(context);
-    final colors = ColorPreset.of(context);
-    //...Default to Typeface from Palette
-    final x = PresetValue.of<GlyphPreset>(context) ?? redmond;
-    return x.copyWith(parent: thx.textTheme, palette: colors);
+    final theme = Theme.of(context);
+    final spectra = Spectra.of(context);
+    final x = PresetValue.of<Typeface>(context) ?? redmond;
+    return x.copyWith(parent: theme.textTheme, palette: spectra);
   }
 
-  /// Retrieve GlyphPreset instance form [source].
-  /// If [source] is not valid, [GlyphPreset.redmond]
-  /// is returned.
-  factory GlyphPreset.parse(String source) {
+  /// Retrieve Typeface instance form [source]. If [source]
+  /// is not valid, [Typeface.redmond] is returned.
+  ///
+  /// ```dart
+  /// const typeface = Typeface.parse(source)
+  /// ```
+  factory Typeface.parse(String source) {
     //...
-    final data = PresetValue.parse<GlyphPreset>(source);
-    return GlyphPreset.fromJson(data);
+    return Typeface.fromJson(PresetValue.parse<Typeface>(source));
   }
 
-  /// Retrieve GlyphPreset instance form [data].
-  /// If [data] is not valid, [GlyphPreset.redmond]
-  /// is returned.
-  factory GlyphPreset.fromJson(Map<String, dynamic> data) {
+  /// Retrieve Typeface instance form [data]. If [data] is
+  /// not valid, [Typeface.redmond] is returned.
+  ///
+  /// ```dart
+  /// const typeface = Typeface.fromJson(data)
+  /// ```
+  factory Typeface.fromJson(Map<String, dynamic> data) {
     //...
-    return GlyphPreset(
+    return Typeface(
       background: qTextTheme.decode(data['background']) ?? redmond.background,
       foreground: qTextTheme.decode(data['foreground']) ?? redmond.foreground,
       //...surface
@@ -276,8 +284,8 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   }
 
   //...Methods
-  GlyphPreset apply({
-    ColorPreset? palette,
+  Typeface apply({
+    Spectra? palette,
     TextStyle? background,
     TextStyle? foreground,
     //...surface
@@ -313,7 +321,7 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
       );
     }
 
-    return GlyphPreset(
+    return Typeface(
       background: apply(this.background, merge(background, palette?.background)),
       foreground: apply(this.foreground, merge(foreground, palette?.foreground)),
       //...surface
@@ -332,9 +340,9 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   }
 
   @override
-  GlyphPreset merge(other) {
+  Typeface merge(other) {
     //...
-    return GlyphPreset(
+    return Typeface(
       background: background.merge(other?.background),
       foreground: foreground.merge(other?.foreground),
       //...surface
@@ -353,8 +361,8 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   }
 
   @override
-  GlyphPreset copyWith({
-    ColorPreset? palette,
+  Typeface copyWith({
+    Spectra? palette,
     TextTheme? background,
     TextTheme? foreground,
     //...surface
@@ -379,7 +387,7 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
       return arch.merge(nxt).merge(child);
     }
 
-    return GlyphPreset(
+    return Typeface(
       background: sudo(this.background, palette?.background, background),
       foreground: sudo(this.foreground, palette?.foreground, foreground),
       //...surface
@@ -398,10 +406,10 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
   }
 
   @override
-  GlyphPreset lerp(other, t) {
+  Typeface lerp(other, t) {
     //...
-    if (other is! GlyphPreset) return this;
-    return GlyphPreset(
+    if (other is! Typeface) return this;
+    return Typeface(
       background: TextTheme.lerp(background, other.background, t),
       foreground: TextTheme.lerp(foreground, other.foreground, t),
       //...on surface
@@ -438,10 +446,4 @@ class GlyphPreset extends PresetValue<GlyphPreset> {
       'warning': qTextTheme.encode(warning),
     };
   }
-}
-
-extension ContextGlyphPreset on BuildContext {
-  //...Getters
-  /// Shortcut to load Glyph preset from context
-  GlyphPreset get glyphs => GlyphPreset.of(this);
 }

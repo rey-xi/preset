@@ -77,16 +77,5 @@ abstract class PresetValue<T extends PresetValue<T>> extends ThemeExtension<T> {
   Map<String, dynamic> toJson();
 
   @override
-  String toString({DiagnosticLevel? minLevel}) {
-    return '$T(${json.encode(toJson())})';
-  }
-}
-
-extension ContextValuePreset on BuildContext {
-  //...
-  /// Shortcut to load Theme data from context
-  ThemeData get theme => Theme.of(this);
-
-  /// Shortcut to load MediaQuery data from context
-  MediaQueryData get data => MediaQuery.of(this);
+  String toString() => '$T(${json.encode(toJson())})';
 }

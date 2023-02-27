@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:preset/preset.dart';
-import 'package:qp_xt_flutter/qp_xt.dart';
+import 'package:qp_xt/qp_xt.dart';
 
 import '../core/preset_value.dart';
 
-/// ## Color Preset
+/// ## Spectra
 /// [Color] implementation of [PresetValue].
 ///
 /// ```dart
-/// ColorPreset(
+/// Spectra(
 ///   foreground: Color(0xFF6B6266),
 ///   background: Color(0xffe1dacb),
 ///   primary: Color(0xFF887384),
@@ -21,9 +21,9 @@ import '../core/preset_value.dart';
 ///   shade: Color(0x5a75503d),
 /// );
 /// ```
-class ColorPreset extends PresetValue<ColorPreset> {
+class Spectra extends PresetValue<Spectra> {
   //...Constants
-  static const internal = ColorPreset(
+  static const internal = Spectra(
     foreground: Color(0xFF6B6266),
     background: Color(0xffe1dacb),
     primary: Color(0xFF887384),
@@ -44,7 +44,7 @@ class ColorPreset extends PresetValue<ColorPreset> {
   final Color success, error, warning;
   final Color shade, tint;
 
-  const ColorPreset({
+  const Spectra({
     MaterialColor? swatch,
     required this.foreground,
     required this.background,
@@ -64,30 +64,37 @@ class ColorPreset extends PresetValue<ColorPreset> {
         _secondary = onSecondary,
         _ascent = onAscent;
 
-  /// Retrieve ColorPreset instance form [context].
-  /// If context has no instance of ColorPreset in it,
-  /// [ColorPreset.internal] is returned.
-  factory ColorPreset.of(BuildContext context) {
+  /// Retrieve Spectra instance form [context]. If context
+  /// has no instance of Spectra in it, [Spectra.internal]
+  /// is returned.
+  /// ```dart
+  /// const spectra = Spectra.of(context)
+  /// ```
+  factory Spectra.of(BuildContext context) {
     //...
-    final colors = PresetValue.of<ColorPreset>(context);
-    return colors ?? internal;
+    final colors = PresetValue.of<Spectra>(context);
+    return colors ?? internal; // spectra fallback data
   }
 
-  /// Retrieve ColorPreset instance form [source].
-  /// If [source] is not valid, [ColorPreset.internal]
-  /// is returned.
-  factory ColorPreset.parse(String source) {
+  /// Retrieve Spectra instance form [source]. If [source]
+  /// is not valid, [Spectra.internal] is returned.
+  /// ```dart
+  /// const spectra = Spectra.parse(source)
+  /// ```
+  factory Spectra.parse(String source) {
     //...
-    final data = PresetValue.parse<ColorPreset>(source);
-    return ColorPreset.fromJson(data);
+    final data = PresetValue.parse<Spectra>(source);
+    return Spectra.fromJson(data);
   }
 
-  /// Retrieve ColorPreset instance form [data].
-  /// If [data] is not valid, [ColorPreset.internal]
-  /// is returned.
-  factory ColorPreset.fromJson(Map<String, dynamic> data) {
+  /// Retrieve Spectra instance form [data]. If [data] is
+  /// not valid, [Spectra.internal] is returned.
+  /// ```dart
+  /// const spectra = Spectra.fromJson(data)
+  /// ```
+  factory Spectra.fromJson(Map<String, dynamic> data) {
     //...
-    return ColorPreset(
+    return Spectra(
       swatch: Colors.primaries.elementAtOrNull(data['swatch']),
       foreground: qColor.decode(data['foreground']) ?? internal.foreground,
       background: qColor.decode(data['background']) ?? internal.background,
@@ -167,7 +174,7 @@ class ColorPreset extends PresetValue<ColorPreset> {
 
   //...Methods
   @override
-  ColorPreset copyWith({
+  Spectra copyWith({
     MaterialColor? swatch,
     Color? foreground,
     Color? background,
@@ -187,7 +194,7 @@ class ColorPreset extends PresetValue<ColorPreset> {
     Color? tint,
   }) {
     //...
-    return ColorPreset(
+    return Spectra(
       swatch: swatch ?? _swatch,
       foreground: foreground ?? this.foreground,
       background: background ?? this.background,
@@ -209,9 +216,9 @@ class ColorPreset extends PresetValue<ColorPreset> {
   }
 
   @override
-  ColorPreset merge(other) {
+  Spectra merge(other) {
     //...
-    return ColorPreset(
+    return Spectra(
       swatch: other?._swatch ?? _swatch,
       foreground: other?.foreground ?? foreground,
       background: other?.background ?? background,
@@ -233,10 +240,10 @@ class ColorPreset extends PresetValue<ColorPreset> {
   }
 
   @override
-  ColorPreset lerp(other, t) {
+  Spectra lerp(other, t) {
     //...
-    if (other is! ColorPreset) return this;
-    return ColorPreset(
+    if (other is! Spectra) return this;
+    return Spectra(
       swatch: t >= .5 ? other._swatch : _swatch,
       foreground: Color.lerp(foreground, other.foreground, t)!,
       background: Color.lerp(background, other.background, t)!,
@@ -279,10 +286,4 @@ class ColorPreset extends PresetValue<ColorPreset> {
       'shade': qColor.encode(shade),
     };
   }
-}
-
-extension ContextColorPreset on BuildContext {
-  //...Getters
-  /// Shortcut to load Color preset from context
-  ColorPreset get colors => ColorPreset.of(this);
 }

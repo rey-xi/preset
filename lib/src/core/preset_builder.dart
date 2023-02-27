@@ -58,7 +58,7 @@ class PresetBuilder {
       presets: presets,
       child: Builder(
         builder: (context) {
-          final implementation = this.adoption ?? impl;
+          final implementation = adoption ?? impl;
           return implementation(context).copyWith(child: child);
         },
       ),

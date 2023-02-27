@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  qp_xt_flutter: ^0.0.2+3
+  qp_xt: ^0.0.2+3
 
 dev_dependencies:
   flutter_test:
