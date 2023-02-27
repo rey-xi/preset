@@ -3,10 +3,13 @@ import 'package:preset/preset.dart';
 
 /// ## Surface
 /// A more advanced definition to Spectra and other Spectra
-/// dependent Preset Values. [Spectra.foreground] and //...
-/// [Spectra.background] are both affected by this Preset.
-/// To depend on this Preset, easily use any of it's gene-
-/// rational function.
+/// dependent Preset Values. All Spectra components including
+/// [Spectra.foreground] and [Spectra.background] are both
+/// affected by this Preset. To depend on this Preset, easily
+/// use any of it's constructor functions.
+///
+/// - [colorOn]
+/// - [colorOf]
 ///
 /// ```dart
 /// Surface.primary.colorOn(context)
