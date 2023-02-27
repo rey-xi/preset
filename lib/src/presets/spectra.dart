@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:preset/preset.dart';
 import 'package:qp_xt/qp_xt.dart';
 
-import '../core/preset_value.dart';
-
 /// ## Spectra
 /// [Color] implementation of [PresetValue].
 ///
@@ -72,8 +70,8 @@ class Spectra extends PresetValue<Spectra> {
   /// ```
   factory Spectra.of(BuildContext context) {
     //...
-    final colors = PresetValue.of<Spectra>(context);
-    return colors ?? internal; // spectra fallback data
+    final spectra = PresetValue.of<Spectra>(context);
+    return spectra ?? internal; // fallback spectra
   }
 
   /// Retrieve Spectra instance form [source]. If [source]
@@ -84,7 +82,32 @@ class Spectra extends PresetValue<Spectra> {
   factory Spectra.parse(String source) {
     //...
     final data = PresetValue.parse<Spectra>(source);
-    return Spectra.fromJson(data);
+    return Spectra.fromJson(data); // load from json
+  }
+
+  /// Retrieve Spectra instance form [context]. If context
+  /// has no instance of Spectra in it, [Spectra.internal]
+  /// is used. Then [surface] will cook up a new Spectra..
+  /// based on the contextual Spectra data.
+  /// ```dart
+  /// const spectra = Spectra.of(context)
+  /// ```
+  factory Spectra.spectrum(BuildContext context, Surface surface) {
+    //...
+    final spectra = Spectra.of(context);
+    //...
+    return Spectra(
+      foreground: surface.colorOn(context),
+      background: surface.colorOf(context),
+      primary: surface.colorOf(context),
+      secondary: surface.colorOf(context),
+      ascent: surface.colorOf(context),
+      success: spectra.success,
+      error: spectra.error,
+      warning: spectra.warning,
+      tint: spectra.tint,
+      shade: spectra.shade,
+    );
   }
 
   /// Retrieve Spectra instance form [data]. If [data] is
@@ -121,33 +144,33 @@ class Spectra extends PresetValue<Spectra> {
   }
 
   Color get onPrimary {
-    final colors = [foreground, background];
-    return _primary ?? colors.farthestFrom(primary);
+    final spectra = [foreground, background];
+    return _primary ?? spectra.farthestFrom(primary);
   }
 
   Color get onSecondary {
-    final colors = [foreground, background];
-    return _secondary ?? colors.farthestFrom(secondary);
+    final spectra = [foreground, background];
+    return _secondary ?? spectra.farthestFrom(secondary);
   }
 
   Color get onAscent {
-    final colors = [foreground, background];
-    return _ascent ?? colors.farthestFrom(ascent);
+    final spectra = [foreground, background];
+    return _ascent ?? spectra.farthestFrom(ascent);
   }
 
   Color get onSuccess {
-    final colors = [foreground, background];
-    return colors.farthestFrom(success);
+    final spectra = [foreground, background];
+    return spectra.farthestFrom(success);
   }
 
   Color get onError {
-    final colors = [foreground, background];
-    return colors.farthestFrom(error);
+    final spectra = [foreground, background];
+    return spectra.farthestFrom(error);
   }
 
   Color get onWarning {
-    final colors = [foreground, background];
-    return colors.farthestFrom(warning);
+    final spectra = [foreground, background];
+    return spectra.farthestFrom(warning);
   }
 
   Color get primal {
@@ -157,8 +180,8 @@ class Spectra extends PresetValue<Spectra> {
   }
 
   Color get onPrimal {
-    final colors = [foreground, background];
-    return _primary ?? colors.farthestFrom(primal);
+    final spectra = [foreground, background];
+    return _primary ?? spectra.farthestFrom(primal);
   }
 
   Color get subtle {
@@ -168,8 +191,8 @@ class Spectra extends PresetValue<Spectra> {
   }
 
   Color get onSubtle {
-    final colors = [foreground, background];
-    return colors.farthestFrom(subtle);
+    final spectra = [foreground, background];
+    return spectra.farthestFrom(subtle);
   }
 
   //...Methods

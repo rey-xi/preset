@@ -201,12 +201,7 @@ class SurfaceVoid extends StatelessWidget {
   Widget build(BuildContext context) {
     //...
     return Preset(
-      presets: {
-        context.spectra.copyWith(
-          foreground: surface.colorOn(context),
-          background: surface.colorOf(context),
-        )
-      },
+      presets: {Spectra.spectrum(context, surface)},
       child: child,
     );
   }
